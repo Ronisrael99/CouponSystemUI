@@ -4,13 +4,18 @@ import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import {CardActions} from "@mui/material";
 import Button from "@mui/material/Button";
-import Coupon from "../Models/Coupon";
+import Coupon from "../../Models/Coupon";
+import Box from "@mui/material/Box";
+import * as React from "react";
+import {useNavigate} from "react-router-dom";
+import {routs} from "../../Utils/routs";
 
 interface Props {
     coupon:Coupon;
 }
 
 const CompanyManageCouponCard = (props:Props) => {
+    const navigate = useNavigate();
   return (
       <Card sx={{ width: 345, margin: "20px" }}>
           <CardMedia
@@ -26,10 +31,14 @@ const CompanyManageCouponCard = (props:Props) => {
                   {props.coupon?.description}
               </Typography>
           </CardContent>
-          <CardActions>
-              <Button size="small">EDIT COUPON</Button>
-              <Button size="small">DELETE COUPON</Button>
-          </CardActions>
+          <Box textAlign="center">
+              <CardActions sx={{display: "grid", gridTemplateRows: "50% 50%"}}>
+                  <Button size="small" color="primary">
+                      {props.coupon.price}
+                  </Button>
+                  <Button size="small" onClick={()=> navigate(routs.manageCoupon + props.coupon.id)}>EDIT/DELETE COUPON</Button>
+              </CardActions>
+          </Box>
       </Card>
   );
 }

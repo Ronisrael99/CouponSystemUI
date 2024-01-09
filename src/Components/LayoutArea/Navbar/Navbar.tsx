@@ -2,31 +2,28 @@ import * as React from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
-import Menu from '@mui/material/Menu';
-import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
-import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
-import Tooltip from '@mui/material/Tooltip';
-import AdbIcon from '@mui/icons-material/Adb';
-import MenuItem from '@mui/material/MenuItem';
-import {usePages} from "../../../Hooks/UsePages";
 import {useNavigate} from "react-router-dom";
 import {routs} from "../../../Utils/routs";
+import {useEffect, useState} from "react";
+import {loginStore} from "../../../Redux/Stores/LoginStore";
 
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
 function ResponsiveAppBar() {
-    const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
-    const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
+
     const navigate = useNavigate();
 
-    const handleNav = (route: string) => {
-        navigate(route)
-    }
-    const pages = usePages();
+    const [client, setClient] = useState("DEFAULT")
+    useEffect(() => {
+        setClient(loginStore.getState().clientType || "DEFAULT")
+
+        loginStore.subscribe(() => {
+            setClient(loginStore.getState().clientType || "DEFAULT")
+        })
+    }, [])
 
     return (
         <AppBar position="static">
@@ -36,19 +33,38 @@ function ResponsiveAppBar() {
                         <Typography
                             variant="h6"
                         >
-                            <i style={{cursor: "pointer"}} onClick={()=> handleNav(routs.home)}>GrooRon</i>
+                            <i style={{cursor: "pointer"}} onClick={() => navigate(routs.home)}>GrooRon</i>
                         </Typography>
 
                         <Box sx={{flexGrow: 1}} display='flex' alignItems="center" ml={10}>
-                            {pages.map(({title, route}) => (
-                                <Button
-                                    key={route}
-                                    onClick={() => handleNav(route)}
-                                    sx={{my: 2, color: 'white', display: 'block'}}
-                                >
-                                    {title}
-                                </Button>
-                            ))}
+                            {client === "DEFAULT" &&
+                                <>
+                                    <Button onClick={() => navigate(routs.home)} sx={{my: 2, color: 'white', display: 'block'}}>Home</Button>
+                                    <Button onClick={() => navigate(routs.products)} sx={{my: 2, color: 'white', display: 'block'}}>Products</Button>
+                                    <Button onClick={() => navigate(routs.contact)} sx={{my: 2, color: 'white', display: 'block'}}>Contact</Button>
+                                    <Button onClick={() => navigate(routs.aboutUs)} sx={{my: 2, color: 'white', display: 'block'}}>About Us</Button>
+                                    <Button onClick={() => navigate(routs.login)} sx={{my: 2, color: 'white', display: 'block'}}>Login</Button>
+                                </>
+                            }
+                            {client === "COMPANY" &&
+                                <>
+                                    <Button onClick={() => navigate(routs.companyDetails)} sx={{my: 2, color: 'white', display: 'block'}}>My Company</Button>
+                                    <Button onClick={() => navigate(routs.addCoupon)} sx={{my: 2, color: 'white', display: 'block'}}>Add Coupon</Button>
+                                    <Button onClick={() => navigate(routs.logout)} sx={{my: 2, color: 'white', display: 'block'}}>Logout</Button>
+                                </>
+                            }
+                            {client === "CUSTOMER" &&
+                                <>
+                                    <Button onClick={() => navigate(routs.home)} sx={{my: 2, color: 'white', display: 'block'}}>Home</Button>
+                                    <Button onClick={() => navigate(routs.logout)} sx={{my: 2, color: 'white', display: 'block'}}>Logout</Button>
+                                </>
+                            }
+                            {client === "ADMINISTRATOR" &&
+                                <>
+                                    <Button onClick={() => navigate(routs.home)} sx={{my: 2, color: 'white', display: 'block'}}>Home</Button>
+                                    <Button onClick={() => navigate(routs.logout)} sx={{my: 2, color: 'white', display: 'block'}}>Logout</Button>
+                                </>
+                            }
                         </Box>
                     </Box>
                 </Toolbar>

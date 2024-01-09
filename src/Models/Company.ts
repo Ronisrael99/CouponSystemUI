@@ -14,5 +14,6 @@ class Company {
         this.password = password;
         this.coupons = coupons;
     }
+
 }
 export default Company;

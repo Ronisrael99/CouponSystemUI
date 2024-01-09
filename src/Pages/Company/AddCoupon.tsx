@@ -22,20 +22,22 @@ const AddCoupon = () => {
     const [error, setError] = useState()
     const [logComp, setLogComp] = useState("")
 
-    useEffect(()=>{
-        companyService.getCompanyDetails(token).then(c => setLogComp(c.name)).catch(compErr => {console.log(compErr)})
-    },[])
+    useEffect(() => {
+        companyService.getCompanyDetails(token).then(c => setLogComp(c.name)).catch(compErr => {
+            console.log(compErr)
+        })
+    }, [])
 
 
     return (
         <Box justifyContent="center" alignItems="center" display="flex">
-            <TitledCard title={"Add Coupon"} sx={{mt: 5, mb:5}}>
+            <TitledCard title={"Add Coupon"} sx={{mt: 5, mb: 5}}>
                 <Formik initialValues={{
                     company: "",
                     category: null,
                     title: "",
                     description: "",
-                    endDate: null,
+                    endDate: new Date(),
                     amount: null,
                     price: null,
                     image: ""
@@ -60,7 +62,7 @@ const AddCoupon = () => {
                                         console.log(coupon)
                                     }
                                 )
-                                .catch(err=>{
+                                .catch(err => {
                                     console.log(err);
                                     setSubmitting(false);
                                     setError(errorHandler.showError(err))
@@ -70,6 +72,7 @@ const AddCoupon = () => {
                           handleChange,
                           handleSubmit,
                           isSubmitting,
+                          values
                       }) => (
 
                         <form onSubmit={handleSubmit}>
@@ -86,10 +89,11 @@ const AddCoupon = () => {
                                 <TextField onChange={handleChange} type={"text"} name={"title"} id="title"
                                            label="Title"
                                            variant="filled"/>
-                                <TextField onChange={handleChange} type={"description"} name={"description"} id="description"
+                                <TextField onChange={handleChange} type={"description"} name={"description"}
+                                           id="description"
                                            label="Description" variant="filled"/>
                                 <TextField onChange={handleChange} type={"date"} name={"endDate"} id="endDate"
-                                           label="End Date" variant="filled"/>
+                                           label="End Date" variant="filled" value={values.endDate} sx={{width: 230}}/>
                                 <TextField onChange={handleChange} type={"number"} name={"amount"} id="amount"
                                            label="Amount" variant="filled"/>
                                 <TextField onChange={handleChange} type={"number"} name={"price"} id="price"

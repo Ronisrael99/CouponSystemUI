@@ -19,7 +19,7 @@ const initState: LoginState = {
     clientType: (() => {
         const clientType = sessionStorage.getItem("clientType");
         console.log("Client Type in initState:", clientType);
-        return clientType ? clientType : null;
+        return clientType ? clientType : "DEFAULT";
     })(),
 };
 
@@ -37,6 +37,8 @@ export const loginSlice = createSlice({
         logout: (state) => {
             state.token = null;
             state.clientType = null
+            sessionStorage.setItem("token", null);
+            sessionStorage.setItem("clientType", "DEFAULT")
         }
     }
 })

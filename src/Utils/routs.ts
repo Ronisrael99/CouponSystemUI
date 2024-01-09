@@ -9,5 +9,6 @@ export const routs = {
     register: "/register",
     companyDetails: "/myCompany",
     addCoupon: "/addCoupon",
-    manageCoupons: "/manageCoupons",
+    manageCoupon: "/manageCoupon/",
+    updateCompany: "/company/update",
 }
