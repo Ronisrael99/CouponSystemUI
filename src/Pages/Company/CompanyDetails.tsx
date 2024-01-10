@@ -15,13 +15,17 @@ import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import Coupon from "../../Models/Coupon";
+import {all} from "axios";
 
 
 
 const CompanyDetails = () => {
 
     const [company, setCompany] = useState<Company>()
+
     const [isVacation, setIsVacation] = useState<boolean>(true)
+    const [isAllCoupons, setIsAllCoupons] = useState<boolean>(false)
+    const [isFood, setIsFood] = useState<boolean>(false)
 
 
     const navigate = useNavigate()
@@ -31,15 +35,28 @@ const CompanyDetails = () => {
 
     useEffect(() => {
         companyService.getCompanyDetails(token)
-            .then(c => setCompany(c))
+            .then(c => {
+                setCompany(c);
+                console.log("is all: " + isAllCoupons)
+                console.log("is food: " + isFood)
+                console.log("is vacation: " + isVacation)
+            })
             .catch(err => errorHandler.showError(err))
     }, [])
 
-
+    function handleAllCoupons() {
+        setIsAllCoupons(!isAllCoupons)
+        console.log("is all:"  + isAllCoupons)
+    }
+    function handleFood() {
+        setIsFood(!isFood)
+        console.log("is food: " + isFood)
+    }
     function handleVacation() {
         setIsVacation(!isVacation)
-        console.log(isVacation)
+        console.log("is vacation: " + isVacation)
     }
+
     return (
         <Box m={5}>
             <Box textAlign={"center"} display={"flex"} justifyContent={"center"}>
@@ -64,9 +81,9 @@ const CompanyDetails = () => {
             </Box>
             <Box display={"flex"} flexWrap={"nowrap"}>
                 <Typography variant={"h5"} m={2}>Filter</Typography>
-                <FormControlLabel control={<Checkbox defaultChecked />} label="All Coupons" sx={{ '& .MuiSvgIcon-root': { fontSize: 20 } }} />
-                <FormControlLabel control={<Checkbox  />} label="Food" sx={{ '& .MuiSvgIcon-root': { fontSize: 20 } }} />
-                <FormControlLabel control={<Checkbox onClick={handleVacation} />} label="Vacation" sx={{ '& .MuiSvgIcon-root': { fontSize: 20 } }} />
+                <FormControlLabel control={<Checkbox defaultChecked onChange={()=> handleAllCoupons()}/>} label="All Coupons" sx={{ '& .MuiSvgIcon-root': { fontSize: 20 } }} />
+                <FormControlLabel control={<Checkbox onChange={()=> handleFood()} />} label="Food" sx={{ '& .MuiSvgIcon-root': { fontSize: 20 } }} />
+                <FormControlLabel control={<Checkbox onChange={()=> handleVacation()} />} label="Vacation" sx={{ '& .MuiSvgIcon-root': { fontSize: 20 } }} />
                 <FormControlLabel control={<Checkbox  />} label="Shopping" sx={{ '& .MuiSvgIcon-root': { fontSize: 20 } }} />
                 <FormControlLabel control={<Checkbox  />} label="Flights" sx={{ '& .MuiSvgIcon-root': { fontSize: 20 } }} />
                 <FormControlLabel control={<Checkbox  />} label="Pets" sx={{ '& .MuiSvgIcon-root': { fontSize: 20 } }} />

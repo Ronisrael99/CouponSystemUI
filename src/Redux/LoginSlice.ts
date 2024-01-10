@@ -5,23 +5,23 @@ export interface LoginState {
     clientType: string
 }
 
-// const initState: LoginState = {
-//     token: sessionStorage.getItem("token") ? sessionStorage.getItem("token") : null,
-//     clientType: sessionStorage.getItem("clientType") ? sessionStorage.getItem("clientType") :null
-// }
-
 const initState: LoginState = {
-    token: (() => {
-        const token = sessionStorage.getItem("token");
-        console.log("Token in initState:", token);
-        return token ? token : null;
-    })(),
-    clientType: (() => {
-        const clientType = sessionStorage.getItem("clientType");
-        console.log("Client Type in initState:", clientType);
-        return clientType ? clientType : "DEFAULT";
-    })(),
-};
+    token: sessionStorage.getItem("token") ? sessionStorage.getItem("token") : null,
+    clientType: sessionStorage.getItem("clientType") ? sessionStorage.getItem("clientType") :"DEFAULT"
+}
+
+// const initState: LoginState = {
+//     token: (() => {
+//         const token = sessionStorage.getItem("token");
+//         console.log("Token in initState:", token);
+//         return token ? token : null;
+//     })(),
+//     clientType: (() => {
+//         const clientType = sessionStorage.getItem("clientType");
+//         console.log("Client Type in initState:", clientType);
+//         return clientType ? clientType : "DEFAULT";
+//     })(),
+// };
 
 export const loginSlice = createSlice({
     name: "user",

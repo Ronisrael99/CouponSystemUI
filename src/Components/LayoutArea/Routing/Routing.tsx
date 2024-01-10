@@ -1,4 +1,4 @@
-import {Navigate, Route, Routes} from "react-router-dom";
+import {Navigate, Route, Routes } from "react-router-dom";
 import {routs} from "../../../Utils/routs";
 import {Login} from "../../../Pages/Login";
 import {Register} from "../../../Pages/Register";
@@ -17,56 +17,54 @@ import UpdateCompany from "../../../Pages/Company/UpdateCompany";
 
 
 function Routing(): JSX.Element {
-    const [client, setClient] = useState("DEFAULT");
+    const [client, setClient] = useState<string>(loginStore.getState().clientType ? loginStore.getState().clientType : "DEFAULT");
 
     useEffect(() => {
+        console.log(loginStore.getState().clientType)
         setClient(loginStore.getState().clientType || "DEFAULT");
 
         loginStore.subscribe(() => {
             setClient(loginStore.getState().clientType || "DEFAULT")
         })
-    }, [])
+    }, [client])
 
 
     return (
         <div className="Routing">
             <Routes>
-                {client === "DEFAULT" &&
+                {client === "DEFAULT" ? (
                     <>
-                        <Route path={routs.home} Component={Home}/>
-                        <Route path={routs.products} Component={Products}/>
-                        <Route path={routs.contact} Component={Contact}/>
-                        <Route path={routs.aboutUs} Component={AboutUs}/>
-                        <Route path={routs.login} Component={Login}/>
-                        <Route path={routs.register} Component={Register}/>
-                        <Route path={routs.productDetails + ":id"} Component={ProductDetails}/>
-                        <Route path={"*"} element={<Navigate to={routs.home}/>}/>
+                        <Route path={routs.home} element={<Home />} />
+                        <Route path={routs.products} element={<Products />} />
+                        <Route path={routs.contact} element={<Contact />} />
+                        <Route path={routs.aboutUs} element={<AboutUs />} />
+                        <Route path={routs.login} element={<Login />} />
+                        <Route path={routs.register} element={<Register />} />
+                        <Route path={routs.productDetails + ":id"} element={<ProductDetails />} />
+                        <Route path={"*"} element={<Navigate to={routs.home} />} />
                     </>
-                }
-                {client === "COMPANY" &&
+                ) : client === "COMPANY" ? (
                     <>
-                        <Route path={routs.companyDetails} Component={CompanyDetails}/>
-                        <Route path={routs.addCoupon} Component={AddCoupon}/>
-                        <Route path={routs.logout} Component={Logout}/>
-                        <Route path={routs.manageCoupon + ":id"} Component={CouponManage}/>
-                        <Route path={routs.updateCompany} Component={UpdateCompany}/>
-                        <Route path={"*"} element={<Navigate to={routs.companyDetails}/>}/>
+                        <Route path={routs.companyDetails} element={<CompanyDetails />} />
+                        <Route path={routs.addCoupon} element={<AddCoupon />} />
+                        <Route path={routs.logout} element={<Logout />} />
+                        <Route path={routs.manageCoupon + ":id"} element={<CouponManage />} />
+                        <Route path={routs.updateCompany} element={<UpdateCompany />} />
+                        <Route path={"*"} element={<Navigate to={routs.companyDetails} />} />
                     </>
-                }
-                {client === "ADMINISTRATOR" &&
+                ) : client === "ADMINISTRATOR" ? (
                     <>
-                        <Route path={routs.home} Component={Home}/>
-                        <Route path={routs.logout} Component={Logout}/>
-                        <Route path={"*"} element={<Navigate to={routs.home}/>}/>
+                        <Route path={routs.home} element={<Home />} />
+                        <Route path={routs.logout} element={<Logout />} />
+                        <Route path={"*"} element={<Navigate to={routs.home} />} />
                     </>
-                }
-                {client === "CUSTOMER" &&
+                ) : client === "CUSTOMER" ? (
                     <>
-                        <Route path={routs.home} Component={Home}/>
-                        <Route path={routs.logout} Component={Logout}/>
-                        <Route path={"*"} element={<Navigate to={routs.home}/>}/>
+                        <Route path={routs.home} element={<Home />} />
+                        <Route path={routs.logout} element={<Logout />} />
+                        <Route path={"*"} element={<Navigate to={routs.home} />} />
                     </>
-                }
+                ) : null}
             </Routes>
         </div>
     );

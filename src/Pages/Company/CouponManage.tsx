@@ -93,7 +93,7 @@ const CouponManage = () => {
                           }) => (
 
                             <form onSubmit={handleSubmit}>
-                                <Stack alignItems="center" spacing={5} mt={5}>
+                                <Stack alignItems="center" spacing={2} mt={5}>
                                     <Select onChange={handleChange} name={"category"} sx={{width: "80%"}}
                                             defaultValue={coupon.category}
                                     >

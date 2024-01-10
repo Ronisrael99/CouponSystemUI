@@ -1,11 +1,9 @@
 import Box from "@mui/material/Box";
 import {TitledCard} from "../../Components/TitledCard";
-import {LoginService} from "../../Services/LoginService";
 import {routs} from "../../Utils/routs";
 import {Alert, Button, Select, Stack, TextField} from "@mui/material";
 import MenuItem from "@mui/material/MenuItem";
 import {Formik} from "formik";
-import {companyStore} from "../../Redux/Stores/CompanyStore";
 import couponService from "../../Services/CouponService";
 import {loginStore} from "../../Redux/Stores/LoginStore";
 import Coupon from "../../Models/Coupon";
@@ -13,8 +11,7 @@ import {useNavigate} from "react-router-dom";
 import errorHandler from "../../Services/ErrorHandler";
 import {useEffect, useState} from "react";
 import companyService from "../../Services/CompanyService";
-import Category from "../../Models/Category";
-import * as Console from "console";
+
 
 const AddCoupon = () => {
     const token = loginStore.getState().token;
@@ -25,6 +22,7 @@ const AddCoupon = () => {
     useEffect(() => {
         companyService.getCompanyDetails(token).then(c => setLogComp(c.name)).catch(compErr => {
             console.log(compErr)
+
         })
     }, [])
 
@@ -37,7 +35,7 @@ const AddCoupon = () => {
                     category: null,
                     title: "",
                     description: "",
-                    endDate: new Date(),
+                    endDate: new Date().toISOString().split("T")[0],
                     amount: null,
                     price: null,
                     image: ""
