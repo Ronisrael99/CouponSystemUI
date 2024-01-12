@@ -26,7 +26,6 @@ function Routing(): JSX.Element {
     const [client, setClient] = useState<string>(loginStore.getState().clientType ? loginStore.getState().clientType : "DEFAULT");
 
     useEffect(() => {
-        console.log(loginStore.getState().clientType)
         setClient(loginStore.getState().clientType || "DEFAULT");
 
         loginStore.subscribe(() => {

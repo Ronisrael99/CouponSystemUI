@@ -1,6 +1,3 @@
-import Category from "./Category";
-import Company from "./Company";
-
 class Coupon {
     public id:number;
     public company:string;

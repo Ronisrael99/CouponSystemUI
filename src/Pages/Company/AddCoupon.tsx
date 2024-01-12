@@ -1,111 +1,128 @@
 import Box from "@mui/material/Box";
 import {TitledCard} from "../../Components/TitledCard";
 import {routs} from "../../Utils/routs";
-import {Alert, Button, Select, Stack, TextField} from "@mui/material";
+import { Button, Select, Stack, TextField} from "@mui/material";
 import MenuItem from "@mui/material/MenuItem";
-import {Formik} from "formik";
 import couponService from "../../Services/CouponService";
 import {loginStore} from "../../Redux/Stores/LoginStore";
 import Coupon from "../../Models/Coupon";
 import {useNavigate} from "react-router-dom";
 import errorHandler from "../../Services/ErrorHandler";
-import {useEffect, useState} from "react";
-import companyService from "../../Services/CompanyService";
+import { useState} from "react";
+import {Error} from "../../Services/Error";
+import {useForm} from "react-hook-form";
+import * as React from "react";
 
 
 const AddCoupon = () => {
     const token = loginStore.getState().token;
     const navigate = useNavigate()
     const [error, setError] = useState()
-    const [logComp, setLogComp] = useState("")
+    const [dialog, setDialog] = useState(false)
+    const {register, handleSubmit, formState} = useForm<Coupon>({mode: "onBlur"})
 
-    useEffect(() => {
-        companyService.getCompanyDetails(token).then(c => setLogComp(c.name)).catch(compErr => {
-            console.log(compErr)
+    function sendForm(coupon:Coupon) {
+        coupon.id = 0;
+        coupon.company = null;
+        coupon.startDate = new Date()
+        coupon.endDate = new Date(coupon.endDate)
+        coupon.category = coupon.category.toString()
 
-        })
-    }, [])
-
+        couponService.addCoupon(token, coupon)
+            .then(c=>{
+                navigate(routs.companyDetails)
+            })
+            .catch(err =>{
+                setError(errorHandler.showError(err))
+                setDialog(true)
+            })
+    }
 
     return (
         <Box justifyContent="center" alignItems="center" display="flex">
             <TitledCard title={"Add Coupon"} sx={{mt: 5, mb: 5}}>
-                <Formik initialValues={{
-                    company: "",
-                    category: null,
-                    title: "",
-                    description: "",
-                    endDate: new Date().toISOString().split("T")[0],
-                    amount: null,
-                    price: null,
-                    image: ""
-                }}
-                        onSubmit={(values, {setSubmitting}) => {
-                            const coupon: Coupon = {
-                                id: 0,
-                                company: null,
-                                category: values.category.toString(),
-                                title: values.title,
-                                description: values.description,
-                                startDate: new Date(),
-                                endDate: new Date(values.endDate),
-                                amount: values.amount,
-                                price: values.price,
-                                image: values.image
-                            }
-                            couponService.addCoupon(token, coupon)
-                                .then(() => {
-                                        setSubmitting(false);
-                                        navigate(routs.companyDetails);
-                                        console.log(coupon)
-                                    }
-                                )
-                                .catch(err => {
-                                    console.log(err);
-                                    setSubmitting(false);
-                                    setError(errorHandler.showError(err))
-                                })
-                        }}>
-                    {({
-                          handleChange,
-                          handleSubmit,
-                          isSubmitting,
-                          values
-                      }) => (
+                {dialog && <Error error={error} onClose={() => setDialog(false)}/>}
 
-                        <form onSubmit={handleSubmit}>
-                            <Stack alignItems="center" spacing={5} mt={5}>
-                                <Select onChange={handleChange} name={"category"} sx={{width: 250}}
-                                        defaultValue={"FOOD"}>
-                                    <MenuItem value={"FOOD"}>Food</MenuItem>
-                                    <MenuItem value={"VACATION"}>Vacation</MenuItem>
-                                    <MenuItem value={"SHOPPING"}>Shopping</MenuItem>
-                                    <MenuItem value={"FLIGHTS"}>Flights</MenuItem>
-                                    <MenuItem value={"PETS"}>Pets</MenuItem>
-                                    <MenuItem value={"ELECTRICITY"}>Electricity</MenuItem>
-                                </Select>
-                                <TextField onChange={handleChange} type={"text"} name={"title"} id="title"
-                                           label="Title"
-                                           variant="filled"/>
-                                <TextField onChange={handleChange} type={"description"} name={"description"}
-                                           id="description"
-                                           label="Description" variant="filled"/>
-                                <TextField onChange={handleChange} type={"date"} name={"endDate"} id="endDate"
-                                           label="End Date" variant="filled" value={values.endDate} sx={{width: 230}}/>
-                                <TextField onChange={handleChange} type={"number"} name={"amount"} id="amount"
-                                           label="Amount" variant="filled"/>
-                                <TextField onChange={handleChange} type={"number"} name={"price"} id="price"
-                                           label="Price" variant="filled"/>
-                                <TextField onChange={handleChange} type={"text"} name={"image"} id="image"
-                                           label="Image URL" variant="filled"/>
+                <form onSubmit={handleSubmit(sendForm)}>
+                    <Stack alignItems="center" spacing={5} mt={5}>
 
-                                <Button type="submit" disabled={isSubmitting} variant="contained"
-                                        color={"secondary"}>Submit</Button>
-                                {error && <Alert severity="error">{error}</Alert>}
-                            </Stack>
-                        </form>
-                    )}
-                </Formik>
+                        <Select {...register("category")} sx={{width: 250}} defaultValue={"FOOD"} required>
+                            <MenuItem value={"FOOD"}>Food</MenuItem>
+                            <MenuItem value={"VACATION"}>Vacation</MenuItem>
+                            <MenuItem value={"SHOPPING"}>Shopping</MenuItem>
+                            <MenuItem value={"FLIGHTS"}>Flights</MenuItem>
+                            <MenuItem value={"PETS"}>Pets</MenuItem>
+                            <MenuItem value={"ELECTRICITY"}>Electricity</MenuItem>
+                        </Select>
+
+                        <TextField type={"text"} name={"title"} id="title" label="Title" variant="filled"
+                                   sx={{width: 250}} required {...register("title")}/>
+
+                        <TextField type={"text"} name={"description"} id="description" label={"Description"}
+                                   variant={"filled"} sx={{width: 250}} required {...register("description")}/>
+
+                        <TextField type={"date"} name={"endDate"} id="endDate"
+                                   label="End Date" defaultValue={new Date().toISOString().split("T")[0]}
+                                   variant="filled"
+                                   sx={{width: 250}} {...register("endDate", {
+                            required: {message: "Required", value: true},
+                            min: {value: new Date().toString(), message: "Please enter valid date"}
+                        })}/>
+                        {formState.errors?.endDate && <span style={{
+                            fontSize: "8px",
+                            color: "red",
+                            margin: 0,
+                            padding: 0,
+                        }}>{formState.errors.endDate.message}</span>}
+
+                        <TextField type={"number"} name={"amount"} id="amount" label={"Amount"} variant={"filled"}
+                                   sx={{width: 250}} required {...register("amount")}/>
+
+                        <TextField type={"number"} name={"price"} id="price" label={"Price"} variant={"filled"}
+                                   sx={{width: 250}} required {...register("price")}/>
+
+                        <TextField type={"text"} name={"image"} id="image" label={"Image URL"} variant={"filled"}
+                                   sx={{width: 250}} required {...register("image")}/>
+
+                        <Button type="submit" variant="contained" color={"secondary"}>Submit</Button>
+                    </Stack>
+                </form>
+
+                {/*            const coupon: Coupon = {*/}
+                {/*                id: 0,*/}
+                {/*                company: null,*/}
+                {/*                category: values.category.toString(),*/}
+                {/*                title: values.title,*/}
+                {/*                description: values.description,*/}
+                {/*                startDate: new Date(),*/}
+                {/*                endDate: new Date(values.endDate),*/}
+                {/*                amount: values.amount,*/}
+                {/*                price: values.price,*/}
+                {/*                image: values.image*/}
+                {/*            }*/}
+                {/*            couponService.addCoupon(token, coupon)*/}
+                {/*                .then(() => {*/}
+                {/*                        setSubmitting(false);*/}
+                {/*                        navigate(routs.companyDetails);*/}
+                {/*                        console.log(coupon)*/}
+                {/*                    }*/}
+                {/*                )*/}
+                {/*                .catch(err => {*/}
+                {/*                    console.log(err);*/}
+                {/*                    setSubmitting(false);*/}
+                {/*                    setError(errorHandler.showError(err))*/}
+                {/*                })*/}
+                {/*        }}>*/}
+                {/*    {({*/}
+
+
+                {/*                <Button type="submit" disabled={isSubmitting} variant="contained"*/}
+                {/*                        color={"secondary"}>Submit</Button>*/}
+                {/*                {error && <Alert severity="error">{error}</Alert>}*/}
+                {/*            </Stack>*/}
+                {/*        </form>*/}
+                {/*    )}*/}
+                {/*</Formik>*/}
             </TitledCard>
         </Box>
     );

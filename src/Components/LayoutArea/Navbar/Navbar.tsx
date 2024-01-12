@@ -10,13 +10,12 @@ import {routs} from "../../../Utils/routs";
 import {useEffect, useState} from "react";
 import {loginStore} from "../../../Redux/Stores/LoginStore";
 
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
-
 function ResponsiveAppBar() {
 
     const navigate = useNavigate();
 
     const [client, setClient] = useState("DEFAULT")
+
     useEffect(() => {
         setClient(loginStore.getState().clientType || "DEFAULT")
 

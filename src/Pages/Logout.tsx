@@ -4,10 +4,8 @@ import Button from "@mui/material/Button";
 import {Stack} from "@mui/material";
 import {useNavigate} from "react-router-dom";
 import {routs} from "../Utils/routs";
-import {loginSlice} from "../Redux/LoginSlice";
 import {loginStore} from "../Redux/Stores/LoginStore";
 import {LoginService} from "../Services/LoginService";
-import companyService from "../Services/CompanyService";
 import {useEffect, useState} from "react";
 import errorHandler from "../Services/ErrorHandler";
 

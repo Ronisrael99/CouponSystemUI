@@ -20,10 +20,11 @@ const Transition = React.forwardRef(function Transition(
 interface Props {
     error: any;
     onClose: () => void; // Add this line
+    title?:string
 }
 
 export const Error = (props:Props) => {
-    const { error, onClose } = props;
+    const { error, onClose, title = "Oops" } = props;
 
     const [open, setOpen] = React.useState(true);
 
@@ -37,7 +38,7 @@ export const Error = (props:Props) => {
                 onClose={onClose}
                 aria-describedby="alert-dialog-slide-description"
             >
-                <DialogTitle>{"Oops"}</DialogTitle>
+                <DialogTitle>{title}</DialogTitle>
                 <DialogContent>
                     <DialogContentText id="alert-dialog-slide-description">
                         {errorHandler.showError(error)}

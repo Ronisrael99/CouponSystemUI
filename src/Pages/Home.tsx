@@ -6,14 +6,11 @@ import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import { FcNext, FcPrevious } from "react-icons/fc";
 import Typography from "@mui/material/Typography";
-import {useNavigate} from "react-router-dom";
 
 function Home(): JSX.Element {
     const [index, setIndex] = useState(0);
     const [products, setProducts] = useState<Coupon[]>();
     const [product, setProduct] = useState<Coupon>();
-
-    const navigate = useNavigate()
 
     useEffect(() => {
         couponService

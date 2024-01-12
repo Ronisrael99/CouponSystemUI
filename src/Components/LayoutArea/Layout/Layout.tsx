@@ -1,7 +1,7 @@
 import Navbar from "../Navbar/Navbar";
 import Routing from "../Routing/Routing";
 import Footer from "../Footer/Footer";
-import {ThemeProvider, THEME_ID, createTheme} from '@mui/material/styles';
+import {ThemeProvider, createTheme} from '@mui/material/styles';
 import Box from "@mui/material/Box";
 
 function Layout(): JSX.Element {
@@ -18,7 +18,8 @@ function Layout(): JSX.Element {
                 h2: {fontSize: "35px"},
                 h3: {fontSize: "18px"},
                 h4: {fontSize: "12px"},
-                body1: {fontSize: "18px"}
+                body1: {fontSize: "18px"},
+                body2: {fontSize: "8px", margin:0, padding:0, color:"red"}
             }
 
         }

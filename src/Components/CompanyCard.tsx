@@ -27,7 +27,7 @@ export const CompanyCard = (props:Props) => {
               <Typography sx={{ mb: 1, mt:2 }} color="text.secondary">
                   Email:
               </Typography>
-              <Typography variant="body2">
+              <Typography variant="body1">
                   {props.company.email}
               </Typography>
           </CardContent>

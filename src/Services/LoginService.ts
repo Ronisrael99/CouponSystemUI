@@ -13,7 +13,6 @@ export const LoginService = {
     login: async (payload: LoginPayload) => {
         const response = (await axios.post(appConfig.url + "login", payload)).data;
         loginStore.dispatch(login({token: response.token, clientType: payload.clientType}))
-        console.log(response)
     },
     logout: async () => {
         loginStore.dispatch(logout())

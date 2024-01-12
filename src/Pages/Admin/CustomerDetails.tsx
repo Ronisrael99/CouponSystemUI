@@ -1,8 +1,6 @@
 import {useEffect, useState} from "react";
-import Company from "../../Models/Company";
 import {useNavigate, useParams} from "react-router-dom";
 import {loginStore} from "../../Redux/Stores/LoginStore";
-import companyService from "../../Services/CompanyService";
 import errorHandler from "../../Services/ErrorHandler";
 import adminService from "../../Services/AdminService";
 import Box from "@mui/material/Box";
@@ -15,9 +13,12 @@ import Checkbox from "@mui/material/Checkbox";
 import CompanyManageCouponCard from "../../Components/CompanyComponents/CompanyManageCouponCard";
 import * as React from "react";
 import Customer from "../../Models/Customer";
+import {Error} from "../../Services/Error";
 
 export const CustomerDetails = () => {
   const [customer, setCustomer] = useState<Customer>()
+  const [error, setError] = useState();
+  const [dialog, setDialog] = useState(false)
 
   const [isVacation, setIsVacation] = useState<boolean>(true)
   const [isAllCoupons, setIsAllCoupons] = useState<boolean>(false)
@@ -33,7 +34,10 @@ export const CustomerDetails = () => {
   useEffect(() => {
     adminService.getOneCustomer(token, id)
         .then(c => setCustomer(c))
-        .catch(err => errorHandler.showError(err))
+        .catch(err => {
+          setError(errorHandler.showError(err))
+          setDialog(true)
+        })
   }, [])
 
   function handleAllCoupons() {
@@ -54,6 +58,7 @@ export const CustomerDetails = () => {
 
   return (
       <Box m={5}>
+        {dialog && <Error error={error} onClose={()=> setDialog(false)}/>}
         <Box textAlign={"center"} display={"flex"} justifyContent={"center"}>
           <Box mr={"40px"}>
             <Paper elevation={3} sx={{padding: 2, borderRadius: 5}}>

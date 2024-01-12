@@ -1,6 +1,5 @@
 class ErrorHandler {
     public showError(err: any) {
-        console.log(err)
         if (typeof (err) == "string") {
             return err
         } else if (err.response) {

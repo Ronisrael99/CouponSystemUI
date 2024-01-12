@@ -1,20 +1,22 @@
 import {useEffect, useState} from "react";
-import Company from "../../Models/Company";
 import {loginStore} from "../../Redux/Stores/LoginStore";
 import {useNavigate, useParams} from "react-router-dom";
-import companyService from "../../Services/CompanyService";
 import errorHandler from "../../Services/ErrorHandler";
 import adminService from "../../Services/AdminService";
 import {routs} from "../../Utils/routs";
 import Box from "@mui/material/Box";
 import {TitledCard} from "../../Components/TitledCard";
-import {Formik} from "formik";
-import {Alert, Button, Stack, TextField} from "@mui/material";
+import { Button, Stack, TextField} from "@mui/material";
 import Customer from "../../Models/Customer";
+import {useForm} from "react-hook-form";
+import {Error} from "../../Services/Error";
 
 export const UpdateCustomer = () => {
+
     const [customer, setCustomer] = useState<Customer>()
     const [error, setError] = useState()
+    const [dialog, setDialog] = useState(false)
+    const {register, handleSubmit, formState} = useForm<Customer>({mode: "onBlur"})
     const token = loginStore.getState().token
     const navigate = useNavigate()
     const id = parseInt(useParams().id!)
@@ -25,7 +27,8 @@ export const UpdateCustomer = () => {
                 setCustomer(c)
             })
             .catch(err => {
-                errorHandler.showError(err)
+                setError(errorHandler.showError(err))
+                setDialog(true)
             })
     }, [])
 
@@ -34,84 +37,73 @@ export const UpdateCustomer = () => {
         if (result) {
             adminService.deleteCustomer(token, id)
                 .then(c => navigate(routs.adminCustomers))
-                .catch(err => errorHandler.showError(err))
+                .catch(err => {
+                    setError(errorHandler.showError(err))
+                    setDialog(true)
+                })
         }
+    }
+
+    function sendForm(formCustomer: Customer) {
+        formCustomer.id = customer.id
+        formCustomer.coupons = null
+        adminService.updateCustomer(token, formCustomer)
+            .then(c => {
+                navigate(routs.adminCustomerDetails + customer.id)
+            })
+            .catch(err => {
+                setError(errorHandler.showError(err))
+                setDialog(true)
+            })
     }
 
     return (
         <Box justifyContent="center" alignItems="center" display="flex" m={5}>
+            {dialog && <Error error={error} onClose={() => setDialog(false)}/>}
             <TitledCard title={"Update Customer"}>
 
                 {customer &&
-                    <Formik initialValues={{
-                        firstName: customer.firstName,
-                        lastName: customer.lastName,
-                        email: customer.email,
-                        password: customer.password
-                    }}
-                            onSubmit={(values, {setSubmitting}) => {
-                                const updatedCustomer: Customer = {
-                                    id: customer.id,
-                                    firstName: customer.firstName,
-                                    lastName: customer.lastName,
-                                    email: values.email,
-                                    password: values.password,
-                                    coupons: null
+
+                    <form onSubmit={handleSubmit(sendForm)}>
+                        <Stack alignItems={"center"} spacing={5} mt={5}>
+
+                            <TextField type={"text"} name={"firstName"} id={"firstName"} label={"First Name"}
+                                       variant={"filled"} defaultValue={customer.firstName}
+                                       required {...register("firstName")}/>
+
+                            <TextField type={"text"} name={"lastName"} id={"lastName"} label={"Last Name"}
+                                       variant={"filled"} defaultValue={customer.lastName}
+                                       required {...register("lastName")}/>
+
+                            <TextField type={"email"} name={"email"} id={"email"} label={"Email"} variant={"filled"}
+                                       defaultValue={customer.email} required {...register("email", {
+                                required: {message: "Required", value: true},
+                                pattern: {
+                                    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
+                                    message: 'Invalid email address',
                                 }
-                                {
-                                    adminService.updateCustomer(token, updatedCustomer)
-                                        .then(() => {
-                                                setSubmitting(false);
-                                                navigate(routs.adminCustomerDetails + customer.id);
-                                            }
-                                        )
-                                        .catch(err => {
-                                            console.log(err);
-                                            setSubmitting(false);
-                                            setError(errorHandler.showError(err))
-                                        })
-                                }
+                            })}/>
+                            {formState.errors?.email && <span style={{
+                                fontSize: "8px",
+                                color: "red",
+                                margin: 0,
+                                padding: 0,
+                            }}>{formState.errors.email.message}</span>}
 
-                            }}>
-                        {({
-                              handleChange,
-                              handleSubmit,
-                              isSubmitting,
-                              values
-                          }) => (
+                            <TextField type={"password"} name={"password"} id={"password"} label={"Password"}
+                                       variant={"filled"} defaultValue={customer.password}
+                                       required {...register("password")}/>
 
-                            <form onSubmit={handleSubmit}>
-                                <Stack alignItems="center" spacing={5} mt={5}>
-                                    <TextField onChange={handleChange} type={"text"} name={"firstName"} id="firstName"
-                                               label={"First Name"}
-                                               variant="filled"
-                                               value={customer.firstName}
-                                    />
-                                    <TextField onChange={handleChange} type={"text"} name={"lastName"} id="lastName"
-                                               label={"Last Name"}
-                                               variant="filled"
-                                               value={customer.lastName}
-                                    />
-                                    <TextField onChange={handleChange} type={"email"} name={"email"}
-                                               label="Email" id="email"
-                                               value={values.email}
-                                               variant="filled"
-                                    />
-                                    <TextField onChange={handleChange} type={"password"} name={"password"} id="password"
-                                               label="Password" value={values.password} variant="filled"/>
+                            <Button type="submit" variant="contained"
+                                    color={"secondary"}>Update Customer</Button>
 
-                                    <Button type="submit" disabled={isSubmitting} variant="contained"
-                                            color={"secondary"}>Update Customer</Button>
+                            <Button sx={{background: "Red", color: "black", width: "190px"}}
+                                    onClick={handleDelete}>Delete Customer</Button>
 
-                                        <Button sx={{background: "Red", color: "black", width: "190px"}}
-                                                onClick={handleDelete}>Delete Customer</Button>
-                                    {error && <Alert severity="error">{error}</Alert>}
-                                </Stack>
-                            </form>
-                        )}
-                    </Formik>
+                        </Stack>
+                    </form>
+
                 }
-
             </TitledCard>
         </Box>
     );

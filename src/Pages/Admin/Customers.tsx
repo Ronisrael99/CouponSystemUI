@@ -8,7 +8,9 @@ import {TextField, Typography} from "@mui/material";
 import {CustomerCard} from "../../Components/CustomerCard";
 import Customer from "../../Models/Customer";
 
+
 export const Customers = () => {
+
   const token = loginStore.getState().token;
   const [customers, setCustomers] = useState<Customer[]>();
   const [error, setError] = useState();

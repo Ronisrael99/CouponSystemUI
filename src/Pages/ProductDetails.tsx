@@ -30,7 +30,6 @@ export const ProductDetails = () => {
         couponService.getOneCoupon(id)
             .then(p => {
                 setProduct(p);
-                console.log(p)
             })
             .catch(err => {
                 setError(errorHandler.showError(err));

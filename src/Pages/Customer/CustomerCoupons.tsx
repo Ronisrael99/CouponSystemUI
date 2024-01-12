@@ -38,7 +38,7 @@ export const CustomerCoupons = () => {
             {
                 coupons?.length > 0 ?
                     <Box display="flex" flexWrap="wrap" m={5}>
-                        {coupons?.map(c => <ProductCard coupon={c}/>)}
+                        {coupons?.map(c => <ProductCard coupon={c} key={c.id}/>)}
                     </Box>
                     : <Box textAlign={"center"} p={5}>
                         <Typography variant={"h5"}>You dont have any coupons yet!</Typography>

@@ -1,14 +1,21 @@
 import {Button, Stack, TextField, Typography} from "@mui/material";
-import Paper from '@mui/material/Paper';
 import Box from "@mui/material/Box";
 import {TitledCard} from "../Components/TitledCard";
+import {useState} from "react";
+import {Error} from "../Services/Error";
 
 
 function Contact(): JSX.Element {
 
+    const [dialog, setDialog] = useState(false)
+
+    function handleSubmit() {
+        setDialog(true)
+    }
 
     return (
         <Box>
+            {dialog && <Error error={"We got your message! We will make contact with you as soon as possible!"} title={"Thank You"} onClose={()=>setDialog(false)}/>}
             <Box textAlign='center'>
                 <Typography variant="h1" mb={5}>Contact Us</Typography>
             </Box>
@@ -31,7 +38,7 @@ function Contact(): JSX.Element {
                             <TextField id="filled-basic" label="Phone Number" variant="filled"/>
                             <TextField id="filled-basic" label="Email" variant="filled"/>
                             <TextField id="filled-basic" label="Ask Anything" variant="filled"/>
-                            <Button variant="contained" color={"secondary"}>Submit</Button>
+                            <Button variant="contained" color={"secondary"} onClick={handleSubmit}>Submit</Button>
                         </Stack>
                     </form>
                 </TitledCard>
