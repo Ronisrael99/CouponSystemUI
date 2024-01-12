@@ -11,4 +11,12 @@ export const routs = {
     addCoupon: "/addCoupon",
     manageCoupon: "/manageCoupon/",
     updateCompany: "/company/update",
+    customerCoupons: "/customer/coupons",
+    adminCompanies: "/admin/companies",
+    adminCompanyDetails: "/admin/company/",
+    adminUpdateCompany: "/admin/company/update/",
+    adminAddCompany: "/admin/company/add",
+    adminCustomers: "/admin/customers",
+    adminCustomerDetails: "/admin/customer/",
+    adminUpdateCustomer: "/admin/customer/update/",
 }

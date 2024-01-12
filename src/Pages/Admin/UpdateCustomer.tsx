@@ -1,81 +1,68 @@
-import Box from "@mui/material/Box";
-import {TitledCard} from "../../Components/TitledCard";
 import {useEffect, useState} from "react";
 import Company from "../../Models/Company";
-import companyService from "../../Services/CompanyService";
 import {loginStore} from "../../Redux/Stores/LoginStore";
-import errorHandler from "../../Services/ErrorHandler";
-import {LoginService} from "../../Services/LoginService";
-import {routs} from "../../Utils/routs";
-import {Alert, Button, Select, Stack, TextField} from "@mui/material";
-import MenuItem from "@mui/material/MenuItem";
-import {Formik} from "formik";
 import {useNavigate, useParams} from "react-router-dom";
-import Coupon from "../../Models/Coupon";
+import companyService from "../../Services/CompanyService";
+import errorHandler from "../../Services/ErrorHandler";
 import adminService from "../../Services/AdminService";
+import {routs} from "../../Utils/routs";
+import Box from "@mui/material/Box";
+import {TitledCard} from "../../Components/TitledCard";
+import {Formik} from "formik";
+import {Alert, Button, Stack, TextField} from "@mui/material";
+import Customer from "../../Models/Customer";
 
-const UpdateCompany = () => {
-    const [company, setCompany] = useState<Company>()
+export const UpdateCustomer = () => {
+    const [customer, setCustomer] = useState<Customer>()
     const [error, setError] = useState()
     const token = loginStore.getState().token
     const navigate = useNavigate()
     const id = parseInt(useParams().id!)
 
     useEffect(() => {
-        loginStore.getState().clientType === "COMPANY" ?
-            companyService.getCompanyDetails(token)
-                .then(c => setCompany(c))
-                .catch(err => errorHandler.showError(err))
-            :
-            adminService.getOneCompany(token, id)
-                .then(c => setCompany(c))
-                .catch(err => errorHandler.showError(err))
+        adminService.getOneCustomer(token, id)
+            .then(c => {
+                setCustomer(c)
+            })
+            .catch(err => {
+                errorHandler.showError(err)
+            })
     }, [])
 
     function handleDelete() {
         const result = window.confirm("Are you sure ?");
-        if (result){
-            adminService.deleteCompany(token, id)
-                .then(c => navigate(routs.adminCompanies))
+        if (result) {
+            adminService.deleteCustomer(token, id)
+                .then(c => navigate(routs.adminCustomers))
                 .catch(err => errorHandler.showError(err))
         }
     }
 
     return (
         <Box justifyContent="center" alignItems="center" display="flex" m={5}>
-            <TitledCard title={"Update Company"}>
+            <TitledCard title={"Update Customer"}>
 
-                {company &&
+                {customer &&
                     <Formik initialValues={{
-                        name: company.name,
-                        email: company.email,
-                        password: company.password
+                        firstName: customer.firstName,
+                        lastName: customer.lastName,
+                        email: customer.email,
+                        password: customer.password
                     }}
                             onSubmit={(values, {setSubmitting}) => {
-                                const updatedCompany: Company = {
-                                    id: company.id,
-                                    name: company.name,
+                                const updatedCustomer: Customer = {
+                                    id: customer.id,
+                                    firstName: customer.firstName,
+                                    lastName: customer.lastName,
                                     email: values.email,
                                     password: values.password,
                                     coupons: null
                                 }
-                                {loginStore.getState().clientType === "COMPANY" ?
-                                    companyService.updateCompany(token, updatedCompany)
+                                {
+                                    adminService.updateCustomer(token, updatedCustomer)
                                         .then(() => {
                                                 setSubmitting(false);
-                                                navigate(routs.companyDetails);
-                                            }
-                                        )
-                                        .catch(err => {
-                                            console.log(err);
-                                            setSubmitting(false);
-                                            setError(errorHandler.showError(err))
-                                        })
-                                    :
-                                    adminService.updateCompany(token, updatedCompany)
-                                        .then(() => {
-                                                setSubmitting(false);
-                                                navigate(routs.adminCompanyDetails + id);
+                                                navigate(routs.adminCustomerDetails + customer.id);
                                             }
                                         )
                                         .catch(err => {
@@ -95,10 +82,15 @@ const UpdateCompany = () => {
 
                             <form onSubmit={handleSubmit}>
                                 <Stack alignItems="center" spacing={5} mt={5}>
-                                    <TextField onChange={handleChange} type={"text"} name={"name"} id="name"
-                                               label={"Company Name"}
+                                    <TextField onChange={handleChange} type={"text"} name={"firstName"} id="firstName"
+                                               label={"First Name"}
                                                variant="filled"
-                                               value={company.name}
+                                               value={customer.firstName}
+                                    />
+                                    <TextField onChange={handleChange} type={"text"} name={"lastName"} id="lastName"
+                                               label={"Last Name"}
+                                               variant="filled"
+                                               value={customer.lastName}
                                     />
                                     <TextField onChange={handleChange} type={"email"} name={"email"}
                                                label="Email" id="email"
@@ -109,10 +101,10 @@ const UpdateCompany = () => {
                                                label="Password" value={values.password} variant="filled"/>
 
                                     <Button type="submit" disabled={isSubmitting} variant="contained"
-                                            color={"secondary"}>Update Company</Button>
-                                    {loginStore.getState().clientType === "ADMINISTRATOR" &&
+                                            color={"secondary"}>Update Customer</Button>
+
                                         <Button sx={{background: "Red", color: "black", width: "190px"}}
-                                                onClick={handleDelete}>Delete Company</Button>}
+                                                onClick={handleDelete}>Delete Customer</Button>
                                     {error && <Alert severity="error">{error}</Alert>}
                                 </Stack>
                             </form>
@@ -124,4 +116,3 @@ const UpdateCompany = () => {
         </Box>
     );
 }
-export default UpdateCompany

@@ -14,6 +14,12 @@ import Logout from "../../../Pages/Logout";
 import CompanyDetails from "../../../Pages/Company/CompanyDetails";
 import CouponManage from "../../../Pages/Company/CouponManage";
 import UpdateCompany from "../../../Pages/Company/UpdateCompany";
+import {CustomerCoupons} from "../../../Pages/Customer/CustomerCoupons";
+import {Companies} from "../../../Pages/Admin/Companies";
+import {AddCompany} from "../../../Pages/Admin/AddCompany";
+import {Customers} from "../../../Pages/Admin/Customers";
+import {CustomerDetails} from "../../../Pages/Admin/CustomerDetails";
+import {UpdateCustomer} from "../../../Pages/Admin/UpdateCustomer";
 
 
 function Routing(): JSX.Element {
@@ -55,12 +61,24 @@ function Routing(): JSX.Element {
                 ) : client === "ADMINISTRATOR" ? (
                     <>
                         <Route path={routs.home} element={<Home />} />
+                        <Route path={routs.adminCompanies} element={<Companies />} />
+                        <Route path={routs.adminCompanyDetails + ":id"} element={<CompanyDetails />} />
+                        <Route path={routs.adminUpdateCompany + ":id"} element={<UpdateCompany />} />
+                        <Route path={routs.adminAddCompany} element={<AddCompany />} />
+                        <Route path={routs.adminCustomers} element={<Customers />} />
+                        <Route path={routs.adminCustomerDetails + ":id"} element={<CustomerDetails />} />
+                        <Route path={routs.adminUpdateCustomer + ":id"} element={<UpdateCustomer />} />
                         <Route path={routs.logout} element={<Logout />} />
                         <Route path={"*"} element={<Navigate to={routs.home} />} />
                     </>
                 ) : client === "CUSTOMER" ? (
                     <>
                         <Route path={routs.home} element={<Home />} />
+                        <Route path={routs.products} element={<Products />} />
+                        <Route path={routs.contact} element={<Contact />} />
+                        <Route path={routs.aboutUs} element={<AboutUs />} />
+                        <Route path={routs.productDetails + ":id"} element={<ProductDetails />} />
+                        <Route path={routs.customerCoupons} element={<CustomerCoupons />} />
                         <Route path={routs.logout} element={<Logout />} />
                         <Route path={"*"} element={<Navigate to={routs.home} />} />
                     </>

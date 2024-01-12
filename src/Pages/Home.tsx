@@ -7,7 +7,6 @@ import Paper from "@mui/material/Paper";
 import { FcNext, FcPrevious } from "react-icons/fc";
 import Typography from "@mui/material/Typography";
 import {useNavigate} from "react-router-dom";
-import {routs} from "../Utils/routs";
 
 function Home(): JSX.Element {
     const [index, setIndex] = useState(0);
@@ -19,7 +18,7 @@ function Home(): JSX.Element {
     useEffect(() => {
         couponService
             .getAllCoupons()
-            .then((p) => setProducts(p))
+            .then((p) => {setProducts(p); })
             .catch((err) => errorHandler.showError(err));
     }, []);
 

@@ -9,6 +9,8 @@ import Box from "@mui/material/Box";
 import * as React from "react";
 import {useNavigate} from "react-router-dom";
 import {routs} from "../../Utils/routs";
+import {useEffect, useState} from "react";
+import {loginStore} from "../../Redux/Stores/LoginStore";
 
 interface Props {
     coupon:Coupon;
@@ -16,6 +18,12 @@ interface Props {
 
 const CompanyManageCouponCard = (props:Props) => {
     const navigate = useNavigate();
+    const [client, setClient] = useState(loginStore.getState().clientType ? loginStore.getState().clientType : "DEFAULT")
+
+    useEffect(()=>{
+        setClient(loginStore.getState().clientType)
+    },[])
+
   return (
       <Card sx={{ width: 345, margin: "20px" }}>
           <CardMedia
@@ -36,7 +44,7 @@ const CompanyManageCouponCard = (props:Props) => {
                   <Button size="small" color="primary">
                       {props.coupon.price}
                   </Button>
-                  <Button size="small" onClick={()=> navigate(routs.manageCoupon + props.coupon.id)}>EDIT/DELETE COUPON</Button>
+                  {client === "COMPANY" && <Button size="small" onClick={()=> navigate(routs.manageCoupon + props.coupon.id)}>EDIT/DELETE COUPON</Button>}
               </CardActions>
           </Box>
       </Card>

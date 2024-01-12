@@ -7,7 +7,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import CompanyManageCouponCard from "../../Components/CompanyComponents/CompanyManageCouponCard";
 import Button from "@mui/material/Button";
-import {useNavigate} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import {routs} from "../../Utils/routs";
 import Paper from "@mui/material/Paper";
 import * as React from 'react';
@@ -16,7 +16,7 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import Coupon from "../../Models/Coupon";
 import {all} from "axios";
-
+import adminService from "../../Services/AdminService";
 
 
 const CompanyDetails = () => {
@@ -32,30 +32,38 @@ const CompanyDetails = () => {
 
 
     const token = loginStore.getState().token
+    const id = parseInt(useParams().id!)
 
     useEffect(() => {
-        companyService.getCompanyDetails(token)
-            .then(c => {
-                setCompany(c);
-                console.log("is all: " + isAllCoupons)
-                console.log("is food: " + isFood)
-                console.log("is vacation: " + isVacation)
-            })
-            .catch(err => errorHandler.showError(err))
+        loginStore.getState().clientType === "COMPANY" ?
+            companyService.getCompanyDetails(token)
+                .then(c => {
+                    setCompany(c);
+                })
+                .catch(err => errorHandler.showError(err))
+            :
+            adminService.getOneCompany(token, id)
+                .then(c => {
+                    setCompany(c);
+                })
+                .catch(err => errorHandler.showError(err))
     }, [])
 
     function handleAllCoupons() {
         setIsAllCoupons(!isAllCoupons)
-        console.log("is all:"  + isAllCoupons)
+        console.log("is all:" + isAllCoupons)
     }
+
     function handleFood() {
         setIsFood(!isFood)
         console.log("is food: " + isFood)
     }
+
     function handleVacation() {
         setIsVacation(!isVacation)
         console.log("is vacation: " + isVacation)
     }
+
 
     return (
         <Box m={5}>
@@ -74,20 +82,25 @@ const CompanyDetails = () => {
                 </Box>
             </Box>
             <Box textAlign={"center"} m={5}>
-                <Button variant="contained" color={"primary"} onClick={() => navigate(routs.updateCompany)}>Update Company Details</Button>
+                <Button variant="contained" color={"primary"} onClick={() => navigate(loginStore.getState().clientType === "COMPANY" ? routs.updateCompany : routs.adminUpdateCompany + id)}>Update
+                    Company Details</Button>
             </Box>
             <Box textAlign="center">
                 <Typography variant={"h2"}>Company Coupons</Typography>
             </Box>
             <Box display={"flex"} flexWrap={"nowrap"}>
                 <Typography variant={"h5"} m={2}>Filter</Typography>
-                <FormControlLabel control={<Checkbox defaultChecked onChange={()=> handleAllCoupons()}/>} label="All Coupons" sx={{ '& .MuiSvgIcon-root': { fontSize: 20 } }} />
-                <FormControlLabel control={<Checkbox onChange={()=> handleFood()} />} label="Food" sx={{ '& .MuiSvgIcon-root': { fontSize: 20 } }} />
-                <FormControlLabel control={<Checkbox onChange={()=> handleVacation()} />} label="Vacation" sx={{ '& .MuiSvgIcon-root': { fontSize: 20 } }} />
-                <FormControlLabel control={<Checkbox  />} label="Shopping" sx={{ '& .MuiSvgIcon-root': { fontSize: 20 } }} />
-                <FormControlLabel control={<Checkbox  />} label="Flights" sx={{ '& .MuiSvgIcon-root': { fontSize: 20 } }} />
-                <FormControlLabel control={<Checkbox  />} label="Pets" sx={{ '& .MuiSvgIcon-root': { fontSize: 20 } }} />
-                <FormControlLabel control={<Checkbox  />} label="Electricity" sx={{ '& .MuiSvgIcon-root': { fontSize: 20 } }} />
+                <FormControlLabel control={<Checkbox defaultChecked onChange={() => handleAllCoupons()}/>}
+                                  label="All Coupons" sx={{'& .MuiSvgIcon-root': {fontSize: 20}}}/>
+                <FormControlLabel control={<Checkbox onChange={() => handleFood()}/>} label="Food"
+                                  sx={{'& .MuiSvgIcon-root': {fontSize: 20}}}/>
+                <FormControlLabel control={<Checkbox onChange={() => handleVacation()}/>} label="Vacation"
+                                  sx={{'& .MuiSvgIcon-root': {fontSize: 20}}}/>
+                <FormControlLabel control={<Checkbox/>} label="Shopping" sx={{'& .MuiSvgIcon-root': {fontSize: 20}}}/>
+                <FormControlLabel control={<Checkbox/>} label="Flights" sx={{'& .MuiSvgIcon-root': {fontSize: 20}}}/>
+                <FormControlLabel control={<Checkbox/>} label="Pets" sx={{'& .MuiSvgIcon-root': {fontSize: 20}}}/>
+                <FormControlLabel control={<Checkbox/>} label="Electricity"
+                                  sx={{'& .MuiSvgIcon-root': {fontSize: 20}}}/>
             </Box>
             <Box display="flex" flexWrap="wrap">
                 {company?.coupons.map(c => <CompanyManageCouponCard key={c.id} coupon={c}/>)}

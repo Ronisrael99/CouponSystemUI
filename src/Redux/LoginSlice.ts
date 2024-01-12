@@ -36,7 +36,7 @@ export const loginSlice = createSlice({
         },
         logout: (state) => {
             state.token = null;
-            state.clientType = null
+            state.clientType = "DEFAULT"
             sessionStorage.setItem("token", null);
             sessionStorage.setItem("clientType", "DEFAULT")
         }

@@ -14,7 +14,7 @@ import errorHandler from "../Services/ErrorHandler";
 function Logout() {
     const navigate = useNavigate()
 
-    const [client, setClient] = useState<string>()
+    const [client, setClient] = useState<string>(loginStore.getState().clientType ? loginStore.getState().clientType : "DEFAULT")
     useEffect(()=>{
         setClient(loginStore.getState().clientType)
 
@@ -25,7 +25,7 @@ function Logout() {
 
     function handleLogout(){
         LoginService.logout()
-            .then(()=> navigate(routs.home))
+            .then(()=> {navigate(routs.home)})
             .catch(err => errorHandler.showError(err));
     }
     function handleStay() {
