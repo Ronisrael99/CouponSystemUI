@@ -123,7 +123,6 @@ const CouponManage = () => {
                     <Typography id="modal-modal-title" variant="h6" component="h2" textAlign={"center"}>
                         Update Coupon
                     </Typography>
-                    <Typography id="modal-modal-description" sx={{mt: 2}}>
 
                         {coupon && (
 
@@ -237,8 +236,6 @@ const CouponManage = () => {
 
                         )}
 
-
-                    </Typography>
                 </Box>
             </>
         </Modal>

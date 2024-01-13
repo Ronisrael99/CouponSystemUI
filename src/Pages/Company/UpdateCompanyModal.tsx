@@ -126,7 +126,6 @@ const UpdateCompany = () => {
                         <Typography id="modal-modal-title" variant="h6" component="h2" textAlign={"center"}>
                             Update Company
                         </Typography>
-                        <Typography id="modal-modal-description" sx={{mt: 2}}>
 
                             {company &&
                                 <form onSubmit={handleSubmit(sendForm)}>
@@ -187,24 +186,10 @@ const UpdateCompany = () => {
                                     </Stack>
                                 </form>
                             }
-
-                        </Typography>
                     </>
                 </Box>
             </>
         </Modal>
-
-
-
-
-        // <Box justifyContent="center" alignItems="center" display="flex" m={5}>
-        //     {dialog && <Error error={error} onClose={() => setDialog(false)}/>}
-        //     <TitledCard title={"Update Company"}>
-        //
-        //
-        //
-        //     </TitledCard>
-        // </Box>
     );
 }
 export default UpdateCompany
