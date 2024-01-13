@@ -19,7 +19,7 @@ function Layout(): JSX.Element {
                 h3: {fontSize: "18px"},
                 h4: {fontSize: "12px"},
                 body1: {fontSize: "18px"},
-                body2: {fontSize: "8px", margin:0, padding:0, color:"red"}
+                body2: {fontSize: "10px", margin:0, padding:0, color:"red"}
             }
 
         }

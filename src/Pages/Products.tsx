@@ -8,6 +8,7 @@ import errorHandler from "../Services/ErrorHandler";
 import {NavLink} from "react-router-dom";
 import {routs} from "../Utils/routs";
 import {Error} from "../Services/Error";
+import Typography from "@mui/material/Typography";
 
 export const Products = () => {
 
@@ -23,7 +24,7 @@ export const Products = () => {
                 setDialog(true)
             })
 
-        couponStore.subscribe(()=> {
+        couponStore.subscribe(() => {
             couponService.getAllCoupons()
                 .then(p => setProducts(p))
                 .catch(err => {
@@ -33,11 +34,17 @@ export const Products = () => {
         })
     }, [])
 
-    return (<Box display="flex" flexWrap="wrap" m={5}>
-            {dialog && <Error error={error} onClose={()=>setDialog(false)}/>}
+    return (
+        <>
+            <Typography variant={"h2"} textAlign={"center"} mt={2}>Our Products</Typography>
+            <Box display="flex" flexWrap="wrap" m={5}>
+                {dialog && <Error error={error} onClose={() => setDialog(false)}/>}
 
-            {products.map(p =>  <NavLink key={p.id} to={routs.productDetails + p.id} style={{textDecoration:"none"}}><ProductCard key={p.id} coupon={p}/></NavLink>)}
+                {products.map(p => <NavLink key={p.id} to={routs.productDetails + p.id}
+                                            style={{textDecoration: "none"}}><ProductCard key={p.id}
+                                                                                          coupon={p}/></NavLink>)}
 
-        </Box>
+            </Box>
+        </>
     );
 }

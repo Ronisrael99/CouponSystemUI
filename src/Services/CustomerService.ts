@@ -20,6 +20,10 @@ class CustomerService {
     public async getCustomerCoupons(token:string){
         return (await axios.get<Coupon[]>(appConfig.url + "customer/coupons", {headers: {"Authorization": token}})).data
     }
+
+    public async getCustomerDetails(token:string){
+        return (await axios.get<Customer>(appConfig.url + "customer", {headers: {"Authorization": token}})).data
+    }
 }
 const customerService = new CustomerService();
 export default customerService;

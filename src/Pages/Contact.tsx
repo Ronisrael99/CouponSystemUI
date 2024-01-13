@@ -3,6 +3,8 @@ import Box from "@mui/material/Box";
 import {TitledCard} from "../Components/TitledCard";
 import {useState} from "react";
 import {Error} from "../Services/Error";
+import SendIcon from "@mui/icons-material/Send";
+import * as React from "react";
 
 
 function Contact(): JSX.Element {
@@ -38,7 +40,7 @@ function Contact(): JSX.Element {
                             <TextField id="filled-basic" label="Phone Number" variant="filled"/>
                             <TextField id="filled-basic" label="Email" variant="filled"/>
                             <TextField id="filled-basic" label="Ask Anything" variant="filled"/>
-                            <Button variant="contained" color={"secondary"} onClick={handleSubmit}>Submit</Button>
+                            <Button variant="contained" onClick={handleSubmit} endIcon={<SendIcon/>}>Submit</Button>
                         </Stack>
                     </form>
                 </TitledCard>

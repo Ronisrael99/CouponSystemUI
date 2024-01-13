@@ -12,14 +12,14 @@ import AboutUs from "../../../Pages/AboutUs";
 import AddCoupon from "../../../Pages/Company/AddCoupon";
 import Logout from "../../../Pages/Logout";
 import CompanyDetails from "../../../Pages/Company/CompanyDetails";
-import CouponManage from "../../../Pages/Company/CouponManage";
-import UpdateCompany from "../../../Pages/Company/UpdateCompany";
+import CouponManage from "../../../Pages/Company/CouponManageModal";
+import UpdateCompany from "../../../Pages/Company/UpdateCompanyModal";
 import {CustomerCoupons} from "../../../Pages/Customer/CustomerCoupons";
 import {Companies} from "../../../Pages/Admin/Companies";
 import {AddCompany} from "../../../Pages/Admin/AddCompany";
 import {Customers} from "../../../Pages/Admin/Customers";
 import {CustomerDetails} from "../../../Pages/Admin/CustomerDetails";
-import {UpdateCustomer} from "../../../Pages/Admin/UpdateCustomer";
+import {UpdateCustomer} from "../../../Pages/Admin/UpdateCustomerModal";
 
 
 function Routing(): JSX.Element {

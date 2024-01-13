@@ -13,6 +13,7 @@ import {routs} from "../Utils/routs";
 import customerService from "../Services/CustomerService";
 import 'reactjs-popup/dist/index.css';
 import {Error} from "../Services/Error";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 
 export const ProductDetails = () => {
@@ -53,19 +54,26 @@ export const ProductDetails = () => {
             navigate(routs.home)
         }
     }
+    function handleBack() {
+        navigate(routs.products)
+    }
 
-    return (
+    return ( <>
+        <ArrowBackIcon onClick={handleBack} sx={{cursor: "pointer", marginLeft:9, marginTop: 2}}/>
         <Box display="flex" alignItems="center" justifyContent="center">
             {openErrorDialog && <Error error={error} onClose={() => setOpenErrorDialog(false)}/>}
+
             <Paper elevation={3} sx={{
                 borderRadius: 5,
                 p: 3,
                 minWidth: "90%",
                 minHeight: 650,
                 m: 5,
+                marginTop: 2,
                 display: "grid",
                 gridTemplateColumns: "50% 50%",
             }}>
+
                 <Box display="grid" gridTemplateRows="20% 70% 5% 5%">
                     <Typography variant="h2">{product?.title}</Typography>
                     <Typography variant="h3">{product?.description}</Typography>
@@ -86,6 +94,7 @@ export const ProductDetails = () => {
                 </Paper>
             </Paper>
         </Box>
+        </>
     );
 
 }

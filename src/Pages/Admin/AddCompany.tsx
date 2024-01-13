@@ -10,6 +10,8 @@ import Company from "../../Models/Company";
 import errorHandler from "../../Services/ErrorHandler";
 import {useForm} from "react-hook-form";
 import {Error} from "../../Services/Error";
+import SendIcon from "@mui/icons-material/Send";
+import * as React from "react";
 
 export const AddCompany = () => {
 
@@ -54,7 +56,7 @@ export const AddCompany = () => {
                         }
                     })}/>
                     {formState.errors?.email && <span style={{
-                        fontSize: "8px",
+                        fontSize: "10px",
                         color: "red",
                         margin: 0,
                         padding: 0,
@@ -63,8 +65,8 @@ export const AddCompany = () => {
                     <TextField type={"password"} name={"password"} id={"password"} label={"Password"} variant={"filled"}
                                required {...register("password")}/>
 
-                    <Button type="submit" variant="contained"
-                            color={"secondary"}>Submit</Button>
+                    <Button type={"submit"} variant={"contained"} endIcon={<SendIcon/>}>Add
+                        Company</Button>
 
                 </Stack>
 

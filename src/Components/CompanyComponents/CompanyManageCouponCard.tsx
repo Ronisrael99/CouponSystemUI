@@ -35,15 +35,15 @@ const CompanyManageCouponCard = (props:Props) => {
               <Typography gutterBottom variant="h5" component="div" sx={{minHeight: "80px"}}>
                   {props.coupon?.title}
               </Typography>
-              <Typography variant="body2" color="text.secondary">
+              <Typography variant="h4" color="text.secondary">
                   {props.coupon?.description}
               </Typography>
           </CardContent>
           <Box textAlign="center">
               <CardActions sx={{display: "grid", gridTemplateRows: "50% 50%"}}>
-                  <Button size="small" color="primary">
-                      {props.coupon.price}
-                  </Button>
+
+                   Price:   {" " + props.coupon.price}
+
                   {client === "COMPANY" && <Button size="small" onClick={()=> navigate(routs.manageCoupon + props.coupon.id)}>EDIT/DELETE COUPON</Button>}
               </CardActions>
           </Box>

@@ -1,11 +1,11 @@
-import { loginStore } from "../../Redux/Stores/LoginStore";
-import { useEffect, useState } from "react";
+import {loginStore} from "../../Redux/Stores/LoginStore";
+import {useEffect, useState} from "react";
 import adminService from "../../Services/AdminService";
 import errorHandler from "../../Services/ErrorHandler";
 import * as React from "react";
 import Box from "@mui/material/Box";
-import { CompanyCard } from "../../Components/CompanyCard";
-import { TextField, Typography } from "@mui/material";
+import {CompanyCard} from "../../Components/CompanyCard";
+import {TextField, Typography} from "@mui/material";
 import Company from "../../Models/Company";
 
 export const Companies = () => {
@@ -45,22 +45,25 @@ export const Companies = () => {
     };
 
     return (
-        <Box>
-            <TextField
-                id="filled-basic"
-                label="Search By ID"
-                variant="filled"
-                sx={{ marginLeft: 8, marginTop: 5 }}
-                onChange={handleSearchChange}
-                value={searchId}
-            />
-            <Box display={"flex"} flexWrap={"wrap"} m={5}>
-                {companies?.map((c) => (
-                    <CompanyCard company={c} key={c.id} />
-                ))}
-                {error && <Typography variant="body1">Company not found</Typography>}
+        <>
+            <Typography variant={"h2"} textAlign={"center"} mt={2}>Companies</Typography>
+            <Box>
+                <TextField
+                    id="filled-basic"
+                    label="Search By ID"
+                    variant="filled"
+                    sx={{marginLeft: 8, marginTop: 5}}
+                    onChange={handleSearchChange}
+                    value={searchId}
+                />
+                <Box display={"flex"} flexWrap={"wrap"} m={5}>
+                    {companies?.map((c) => (
+                        <CompanyCard company={c} key={c.id}/>
+                    ))}
+                    {error && <Typography variant="body1">Company not found</Typography>}
+                </Box>
             </Box>
-        </Box>
+        </>
     );
 };
 

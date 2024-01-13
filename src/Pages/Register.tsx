@@ -11,6 +11,7 @@ import {useForm} from "react-hook-form";
 import Customer from "../Models/Customer";
 import {Error} from "../Services/Error";
 import * as React from "react";
+import SendIcon from "@mui/icons-material/Send";
 
 
 export const Register = () => {
@@ -60,7 +61,7 @@ export const Register = () => {
                         required: {message: "Required", value: true}
                     })}/>
                     {formState.errors?.firstName && <span style={{
-                        fontSize: "8px",
+                        fontSize: "10px",
                         color: "red",
                         margin: 0,
                         padding: 0,
@@ -71,7 +72,7 @@ export const Register = () => {
                         required: {message: "Required", value: true}
                     })}/>
                     {formState.errors?.lastName && <span style={{
-                        fontSize: "8px",
+                        fontSize: "10px",
                         color: "red",
                         margin: 0,
                         padding: 0,
@@ -86,7 +87,7 @@ export const Register = () => {
                         }
                     })}/>
                     {formState.errors?.email && <span style={{
-                        fontSize: "8px",
+                        fontSize: "10px",
                         color: "red",
                         margin: 0,
                         padding: 0,
@@ -97,16 +98,17 @@ export const Register = () => {
                         required: {message: "Required", value: true}
                     })}/>
                     {formState.errors?.password && <span style={{
-                        fontSize: "8px",
+                        fontSize: "10px",
                         color: "red",
                         margin: 0,
                         padding: 0,
                     }}>{formState.errors.password.message}</span>}
 
-                    <Button variant={"contained"} type={"submit"} color={"secondary"}>Submit</Button>
+                    <Button type={"submit"} variant={"contained"} endIcon={<SendIcon/>}>Sign Up</Button>
 
                     <Button variant="outlined" size="small" sx={{width: "70%"}}
                             onClick={() => navigate(routs.login)}>Already have an account ? Login</Button>
+
 
                 </Stack>
 

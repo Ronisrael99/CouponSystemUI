@@ -5,6 +5,9 @@ import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import {Button, CardActionArea, CardActions} from '@mui/material';
 import Coupon from "../Models/Coupon";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import {useNavigate} from "react-router-dom";
+import {routs} from "../Utils/routs";
 
 
 
@@ -15,8 +18,9 @@ interface Props {
 
 export const ProductCard = (props: Props) => {
 
-    return (
+    return ( <>
             <Card sx={{width: 345, margin: "20px"}}>
+
                 <CardActionArea>
                     <CardMedia
                         component="img"
@@ -28,17 +32,18 @@ export const ProductCard = (props: Props) => {
                         <Typography gutterBottom variant="h6" component="div" sx={{minHeight: "80px"}}>
                             {props.coupon.title}
                         </Typography>
-                        <Typography variant="body2" color="text.secondary">
+                        <Typography variant="h4" color="text.secondary">
                             {props.coupon.description} <br/>
                             {props.coupon.category}
                         </Typography>
                     </CardContent>
                 </CardActionArea>
                 <CardActions sx={{display: "flex", justifyContent: "center"}}>
-                    <Button size="small" color="primary">
-                        {props.coupon.price}
-                    </Button>
+
+                      Price:  { " " + props.coupon.price}
+
                 </CardActions>
             </Card>
+        </>
     );
 }

@@ -10,6 +10,7 @@ import {useForm} from "react-hook-form";
 import errorHandler from "../Services/ErrorHandler";
 import {Error} from "../Services/Error";
 import * as React from "react";
+import SendIcon from "@mui/icons-material/Send";
 
 interface PayLoad {
     clientType: string,
@@ -67,7 +68,7 @@ export const Login = () => {
                                })}
                     />
                     {formState.errors?.email && <span style={{
-                        fontSize: "8px",
+                        fontSize: "10px",
                         color: "red",
                         margin: 0,
                         padding: 0,
@@ -79,13 +80,13 @@ export const Login = () => {
                                })}
                     />
                     {formState.errors?.password && <span style={{
-                        fontSize: "8px",
+                        fontSize: "10px",
                         color: "red",
                         margin: 0,
                         padding: 0,
                     }}>{formState.errors.password.message}</span>}
 
-                    <Button variant={"contained"} type={"submit"} color={"secondary"}>Submit</Button>
+                    <Button type={"submit"} variant={"contained"} endIcon={<SendIcon/>}>Login</Button>
 
                     <Button variant="outlined" size="small" sx={{width: "50%"}}
                             onClick={() => navigate(routs.register)}>Or sign up</Button>

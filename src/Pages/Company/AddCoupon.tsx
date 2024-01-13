@@ -12,6 +12,7 @@ import { useState} from "react";
 import {Error} from "../../Services/Error";
 import {useForm} from "react-hook-form";
 import * as React from "react";
+import SendIcon from "@mui/icons-material/Send";
 
 
 const AddCoupon = () => {
@@ -37,6 +38,10 @@ const AddCoupon = () => {
                 setDialog(true)
             })
     }
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+
+    const tomorrowDate = tomorrow.toISOString().split("T")[0];
 
     return (
         <Box justifyContent="center" alignItems="center" display="flex">
@@ -61,15 +66,15 @@ const AddCoupon = () => {
                         <TextField type={"text"} name={"description"} id="description" label={"Description"}
                                    variant={"filled"} sx={{width: 250}} required {...register("description")}/>
 
-                        <TextField type={"date"} name={"endDate"} id="endDate"
-                                   label="End Date" defaultValue={new Date().toISOString().split("T")[0]}
+                        <TextField type={"date"} name={"endDate"} id="endDate" inputProps={{min: tomorrowDate}}
+                                   label="End Date" defaultValue={tomorrowDate}
                                    variant="filled"
                                    sx={{width: 250}} {...register("endDate", {
                             required: {message: "Required", value: true},
-                            min: {value: new Date().toString(), message: "Please enter valid date"}
+                            min: {value: tomorrowDate, message: "Cannot add coupon with an expired date"}
                         })}/>
                         {formState.errors?.endDate && <span style={{
-                            fontSize: "8px",
+                            fontSize: "10px",
                             color: "red",
                             margin: 0,
                             padding: 0,
@@ -84,7 +89,8 @@ const AddCoupon = () => {
                         <TextField type={"text"} name={"image"} id="image" label={"Image URL"} variant={"filled"}
                                    sx={{width: 250}} required {...register("image")}/>
 
-                        <Button type="submit" variant="contained" color={"secondary"}>Submit</Button>
+                        <Button type={"submit"} variant={"contained"} endIcon={<SendIcon/>}>Add
+                            Coupon</Button>
                     </Stack>
                 </form>
 
