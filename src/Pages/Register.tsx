@@ -58,7 +58,8 @@ export const Register = () => {
 
                     <TextField type={"text"} name={"firstName"} id={"firstName"} label={"First Name"}
                                variant={"filled"} {...register("firstName", {
-                        required: {message: "Required", value: true}
+                        required: {message: "Required", value: true},
+                        maxLength: {value: 20, message: "Max input 20"}
                     })}/>
                     {formState.errors?.firstName && <span style={{
                         fontSize: "10px",
@@ -69,7 +70,8 @@ export const Register = () => {
 
                     <TextField type={"text"} name={"lastName"} id={"lastName"} label={"Last Name"}
                                variant={"filled"} {...register("lastName", {
-                        required: {message: "Required", value: true}
+                        required: {message: "Required", value: true},
+                        maxLength: {value: 20, message: "Max input 20"}
                     })}/>
                     {formState.errors?.lastName && <span style={{
                         fontSize: "10px",
@@ -84,7 +86,8 @@ export const Register = () => {
                         pattern: {
                             value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
                             message: 'Invalid email address',
-                        }
+                        },
+                        maxLength: {value: 250, message: "Max input 250"}
                     })}/>
                     {formState.errors?.email && <span style={{
                         fontSize: "10px",
@@ -95,7 +98,8 @@ export const Register = () => {
 
                     <TextField type={"password"} name={"password"} id={"password"} label={"Password"}
                                variant={"filled"} {...register("password", {
-                        required: {message: "Required", value: true}
+                        required: {message: "Required", value: true},
+                        maxLength: {value: 250, message: "Max input 250"}
                     })}/>
                     {formState.errors?.password && <span style={{
                         fontSize: "10px",

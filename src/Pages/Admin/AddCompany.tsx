@@ -45,7 +45,15 @@ export const AddCompany = () => {
                 <Stack alignItems="center" spacing={5} mt={5}>
 
                     <TextField type={"text"} name={"name"} id={"name"} label={"Company Name"} variant={"filled"}
-                               required {...register("name")}/>
+                               required {...register("name", {
+                                   maxLength: {value: 250, message: "Max input 250"}
+                    })}/>
+                    {formState.errors?.name && <span style={{
+                        fontSize: "10px",
+                        color: "red",
+                        margin: 0,
+                        padding: 0,
+                    }}>{formState.errors.name.message}</span>}
 
                     <TextField type={"email"} name={"email"} id={"email"} label={"Company Email"} variant={"filled"}
                                required {...register("email", {
@@ -53,7 +61,8 @@ export const AddCompany = () => {
                         pattern: {
                             value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
                             message: 'Invalid email address',
-                        }
+                        },
+                        maxLength: {value: 250, message: "Max input 250"}
                     })}/>
                     {formState.errors?.email && <span style={{
                         fontSize: "10px",
@@ -63,7 +72,15 @@ export const AddCompany = () => {
                     }}>{formState.errors.email.message}</span>}
 
                     <TextField type={"password"} name={"password"} id={"password"} label={"Password"} variant={"filled"}
-                               required {...register("password")}/>
+                               required {...register("password", {
+                        maxLength: {value: 20, message: "Max input 20"}
+                    })}/>
+                    {formState.errors?.password && <span style={{
+                        fontSize: "10px",
+                        color: "red",
+                        margin: 0,
+                        padding: 0,
+                    }}>{formState.errors.password.message}</span>}
 
                     <Button type={"submit"} variant={"contained"} endIcon={<SendIcon/>}>Add
                         Company</Button>

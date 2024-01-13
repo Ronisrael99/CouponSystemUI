@@ -146,6 +146,7 @@ const CouponManage = () => {
                                                defaultValue={coupon.title} sx={{width: "80%"}}
                                                {...register("title", {
                                                    required: {message: "Required", value: true},
+                                                   maxLength: {value: 250, message: "Max input 250"}
                                                })}
                                     />
                                     {formState.errors?.title && <span style={{
@@ -159,6 +160,7 @@ const CouponManage = () => {
                                                variant="filled" defaultValue={coupon.description} sx={{width: "80%"}}
                                                {...register("description", {
                                                    required: {message: "Required", value: true},
+                                                   maxLength: {value: 7000, message: "Max input 7000"}
                                                })}
                                     />
                                     {formState.errors?.description && <span style={{
@@ -213,6 +215,7 @@ const CouponManage = () => {
                                                defaultValue={coupon.image} sx={{width: "80%"}}
                                                {...register("image", {
                                                    required: {message: "Required", value: true},
+                                                   maxLength: {value: 7000, message: "Max input 7000"}
                                                })}
                                     />
                                     {formState.errors?.image && <span style={{

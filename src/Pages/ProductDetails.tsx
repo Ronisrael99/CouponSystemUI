@@ -77,7 +77,7 @@ export const ProductDetails = () => {
                 <Box display="grid" gridTemplateRows="20% 70% 5% 5%">
                     <Typography variant="h2">{product?.title}</Typography>
                     <Typography variant="h3">{product?.description}</Typography>
-                    <Typography variant={"h4"}>{product?.company}</Typography>
+                    <Typography variant={"h4"}>Company: { " " + product?.company}</Typography>
                     <Button sx={{ml: "20%", width: "50%"}} variant="contained" onClick={handlePurchase}>Purchase
                         coupon</Button>
                 </Box>

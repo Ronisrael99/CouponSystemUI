@@ -61,10 +61,26 @@ const AddCoupon = () => {
                         </Select>
 
                         <TextField type={"text"} name={"title"} id="title" label="Title" variant="filled"
-                                   sx={{width: 250}} required {...register("title")}/>
+                                   sx={{width: 250}} required {...register("title", {
+                            maxLength: {value: 250, message: "Max input 250"}
+                        })}/>
+                        {formState.errors?.title && <span style={{
+                            fontSize: "10px",
+                            color: "red",
+                            margin: 0,
+                            padding: 0,
+                        }}>{formState.errors.title.message}</span>}
 
                         <TextField type={"text"} name={"description"} id="description" label={"Description"}
-                                   variant={"filled"} sx={{width: 250}} required {...register("description")}/>
+                                   variant={"filled"} sx={{width: 250}} required {...register("description", {
+                            maxLength: {value: 7000, message: "Max input 7000"}
+                        })}/>
+                        {formState.errors?.description && <span style={{
+                            fontSize: "10px",
+                            color: "red",
+                            margin: 0,
+                            padding: 0,
+                        }}>{formState.errors.description.message}</span>}
 
                         <TextField type={"date"} name={"endDate"} id="endDate" inputProps={{min: tomorrowDate}}
                                    label="End Date" defaultValue={tomorrowDate}
@@ -87,48 +103,20 @@ const AddCoupon = () => {
                                    sx={{width: 250}} required {...register("price")}/>
 
                         <TextField type={"text"} name={"image"} id="image" label={"Image URL"} variant={"filled"}
-                                   sx={{width: 250}} required {...register("image")}/>
+                                   sx={{width: 250}} required {...register("image", {
+                            maxLength: {value: 7000, message: "Max input 7000"}
+                        })}/>
+                        {formState.errors?.image && <span style={{
+                            fontSize: "10px",
+                            color: "red",
+                            margin: 0,
+                            padding: 0,
+                        }}>{formState.errors.image.message}</span>}
 
                         <Button type={"submit"} variant={"contained"} endIcon={<SendIcon/>}>Add
                             Coupon</Button>
                     </Stack>
                 </form>
-
-                {/*            const coupon: Coupon = {*/}
-                {/*                id: 0,*/}
-                {/*                company: null,*/}
-                {/*                category: values.category.toString(),*/}
-                {/*                title: values.title,*/}
-                {/*                description: values.description,*/}
-                {/*                startDate: new Date(),*/}
-                {/*                endDate: new Date(values.endDate),*/}
-                {/*                amount: values.amount,*/}
-                {/*                price: values.price,*/}
-                {/*                image: values.image*/}
-                {/*            }*/}
-                {/*            couponService.addCoupon(token, coupon)*/}
-                {/*                .then(() => {*/}
-                {/*                        setSubmitting(false);*/}
-                {/*                        navigate(routs.companyDetails);*/}
-                {/*                        console.log(coupon)*/}
-                {/*                    }*/}
-                {/*                )*/}
-                {/*                .catch(err => {*/}
-                {/*                    console.log(err);*/}
-                {/*                    setSubmitting(false);*/}
-                {/*                    setError(errorHandler.showError(err))*/}
-                {/*                })*/}
-                {/*        }}>*/}
-                {/*    {({*/}
-
-
-                {/*                <Button type="submit" disabled={isSubmitting} variant="contained"*/}
-                {/*                        color={"secondary"}>Submit</Button>*/}
-                {/*                {error && <Alert severity="error">{error}</Alert>}*/}
-                {/*            </Stack>*/}
-                {/*        </form>*/}
-                {/*    )}*/}
-                {/*</Formik>*/}
             </TitledCard>
         </Box>
     );

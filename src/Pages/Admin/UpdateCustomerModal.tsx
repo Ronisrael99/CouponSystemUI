@@ -106,11 +106,27 @@ export const UpdateCustomer = () => {
                                         <TextField type={"text"} name={"firstName"} id={"firstName"}
                                                    label={"First Name"}
                                                    variant={"filled"} defaultValue={customer.firstName}
-                                                   required {...register("firstName")}/>
+                                                   required {...register("firstName", {
+                                            maxLength: {value: 20, message: "Max input 20"}
+                                        })}/>
+                                        {formState.errors?.firstName && <span style={{
+                                            fontSize: "10px",
+                                            color: "red",
+                                            margin: 0,
+                                            padding: 0,
+                                        }}>{formState.errors.firstName.message}</span>}
 
                                         <TextField type={"text"} name={"lastName"} id={"lastName"} label={"Last Name"}
                                                    variant={"filled"} defaultValue={customer.lastName}
-                                                   required {...register("lastName")}/>
+                                                   required {...register("lastName", {
+                                            maxLength: {value: 20, message: "Max input 20"}
+                                        })}/>
+                                        {formState.errors?.lastName && <span style={{
+                                            fontSize: "10px",
+                                            color: "red",
+                                            margin: 0,
+                                            padding: 0,
+                                        }}>{formState.errors.lastName.message}</span>}
 
                                         <TextField type={"email"} name={"email"} id={"email"} label={"Email"}
                                                    variant={"filled"}
@@ -119,7 +135,8 @@ export const UpdateCustomer = () => {
                                             pattern: {
                                                 value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
                                                 message: 'Invalid email address',
-                                            }
+                                            },
+                                            maxLength: {value: 250, message: "Max input 250"}
                                         })}/>
                                         {formState.errors?.email && <span style={{
                                             fontSize: "10px",
@@ -131,7 +148,15 @@ export const UpdateCustomer = () => {
                                         <TextField type={"password"} name={"password"} id={"password"}
                                                    label={"Password"}
                                                    variant={"filled"} defaultValue={customer.password}
-                                                   required {...register("password")}/>
+                                                   required {...register("password", {
+                                            maxLength: {value: 20, message: "Max input 20"}
+                                        })}/>
+                                        {formState.errors?.password && <span style={{
+                                            fontSize: "10px",
+                                            color: "red",
+                                            margin: 0,
+                                            padding: 0,
+                                        }}>{formState.errors.password.message}</span>}
 
                                         <Button type={"submit"} variant={"contained"} endIcon={<SendIcon/>}>Update
                                             Customer</Button>

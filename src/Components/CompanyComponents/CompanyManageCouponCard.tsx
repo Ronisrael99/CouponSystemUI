@@ -2,7 +2,7 @@ import Card from "@mui/material/Card";
 import CardMedia from "@mui/material/CardMedia";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
-import {CardActions} from "@mui/material";
+import { CardActions} from "@mui/material";
 import Button from "@mui/material/Button";
 import Coupon from "../../Models/Coupon";
 import Box from "@mui/material/Box";
@@ -24,27 +24,45 @@ const CompanyManageCouponCard = (props:Props) => {
         setClient(loginStore.getState().clientType)
     },[])
 
+    const truncatedDescription = props.coupon?.description.length > 180
+        ? props.coupon?.description.substring(0, 180) + '...'
+        : props.coupon?.description;
+
   return (
-      <Card sx={{ width: 345, margin: "20px" }}>
+      <Card sx={{ width: 345, height: 350, margin: "20px", position: "relative" }}>
           <CardMedia
-              sx={{ height: 140 }}
+              component="img"
+              height="140"
               image={props.coupon?.image}
-              title={props.coupon?.title}
+              alt={props.coupon?.title}
           />
-          <CardContent>
-              <Typography gutterBottom variant="h5" component="div" sx={{minHeight: "80px"}}>
+          <CardContent sx={{ position: "absolute"}}>
+              <Typography gutterBottom variant="h6" component="div" sx={{ minHeight: "10px"}}>
                   {props.coupon?.title}
               </Typography>
               <Typography variant="h4" color="text.secondary">
-                  {props.coupon?.description}
+                  {truncatedDescription}
               </Typography>
           </CardContent>
           <Box textAlign="center">
-              <CardActions sx={{display: "grid", gridTemplateRows: "50% 50%"}}>
-
-                   Price:   {" " + props.coupon.price}
-
-                  {client === "COMPANY" && <Button size="small" onClick={()=> navigate(routs.manageCoupon + props.coupon.id)}>EDIT/DELETE COUPON</Button>}
+              <CardActions
+                  sx={{
+                      position: "absolute",
+                      bottom: 0,
+                      width: "100%",
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                  }}
+              >
+                  <Typography gutterBottom variant="h6" component="div" sx={{ minHeight: "10px"}}>
+                      Price: {" " + props.coupon.price}
+                  </Typography>
+                  {client === "COMPANY" && (
+                      <Button size="small" onClick={() => navigate(routs.manageCoupon + props.coupon.id)}>
+                          EDIT/DELETE COUPON
+                      </Button>
+                  )}
               </CardActions>
           </Box>
       </Card>

@@ -64,7 +64,8 @@ export const Login = () => {
                                    pattern: {
                                        value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
                                        message: 'Invalid email address',
-                                   }
+                                   },
+                                   maxLength: {value: 250, message: "Max input 250"}
                                })}
                     />
                     {formState.errors?.email && <span style={{
@@ -77,6 +78,7 @@ export const Login = () => {
                     <TextField type={"password"} name={"password"} id={"password"} label={"Password"} variant={"filled"}
                                {...register("password", {
                                    required: {message: "Required", value: true},
+                                   maxLength: {value: 250, message: "Max input 250"}
                                })}
                     />
                     {formState.errors?.password && <span style={{

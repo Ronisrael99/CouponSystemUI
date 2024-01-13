@@ -18,9 +18,12 @@ interface Props {
 
 export const ProductCard = (props: Props) => {
 
-    return ( <>
-            <Card sx={{width: 345, margin: "20px"}}>
+    const truncatedDescription = props.coupon.description.length > 180
+        ? props.coupon.description.substring(0, 180) + '...'
+        : props.coupon.description;
 
+    return ( <>
+            <Card sx={{ width: 345, height: 350, margin: "20px", position: "relative" }}>
                 <CardActionArea>
                     <CardMedia
                         component="img"
@@ -28,20 +31,17 @@ export const ProductCard = (props: Props) => {
                         image={props.coupon.image}
                         alt={props.coupon.title}
                     />
-                    <CardContent>
-                        <Typography gutterBottom variant="h6" component="div" sx={{minHeight: "80px"}}>
+                    <CardContent sx={{ position: "absolute"}}>
+                        <Typography gutterBottom variant="h6" component="div" sx={{ minHeight: "10px", whiteSpace: "nowrap" }}>
                             {props.coupon.title}
                         </Typography>
                         <Typography variant="h4" color="text.secondary">
-                            {props.coupon.description} <br/>
-                            {props.coupon.category}
+                            {truncatedDescription}
                         </Typography>
                     </CardContent>
                 </CardActionArea>
-                <CardActions sx={{display: "flex", justifyContent: "center"}}>
-
-                      Price:  { " " + props.coupon.price}
-
+                <CardActions sx={{ position: "absolute", bottom: 0, width: "100%", display: "flex", justifyContent: "center", marginTop: 2 }}>
+                    Price: {" " + props.coupon.price}
                 </CardActions>
             </Card>
         </>
