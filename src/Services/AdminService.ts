@@ -2,6 +2,7 @@ import axios from "axios";
 import Company from "../Models/Company";
 import appConfig from "../Utils/AppConfig";
 import Customer from "../Models/Customer";
+import Coupon from "../Models/Coupon";
 
 class AdminService {
 
@@ -39,6 +40,9 @@ class AdminService {
 
     public async deleteCustomer(token:string, id:number){
         return (await axios.delete(appConfig.url + "admin/customer/" + id, {headers: {"Authorization": token}})).data
+    }
+    public async getAllCouponsByCategory(token:string,id:number, category:string){
+        return (await axios.get<Coupon[]>(appConfig.url + "admin/coupons/category/" + id, {headers: {"Authorization": token}, params: {category:category}})).data
     }
 
 }

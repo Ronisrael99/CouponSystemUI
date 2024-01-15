@@ -24,6 +24,10 @@ class CompanyService {
     public async updateCompany(token: string, company:Company){
         return (await axios.put<Company>(appConfig.url + "company/update/company", company, {headers: {"Authorization": token}}))
     }
+
+    public async getAllCouponsByCategory(token:string, category:string){
+        return (await axios.get<Coupon[]>(appConfig.url + "company/coupons/category", {headers: {"Authorization": token}, params: {category:category}})).data
+    }
 }
 
 const companyService = new CompanyService();

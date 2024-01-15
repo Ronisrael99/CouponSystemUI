@@ -29,6 +29,10 @@ class CouponService {
         const response = (await axios.post(appConfig.url + "company/coupon", coupon, {headers: {"Authorization": token}} )).data
         return response;
     }
+
+    public async PUBLICGetAllCouponsByCategory(category:string){
+        return (await axios.get<Coupon[]>(appConfig.url + "public/coupons/category", {params: {category:category}})).data
+    }
 }
 const couponService = new CouponService();
 export default couponService;

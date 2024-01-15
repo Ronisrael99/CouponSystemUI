@@ -21,11 +21,6 @@ export const CustomerDetails = () => {
     const [error, setError] = useState();
     const [dialog, setDialog] = useState(false)
 
-    const [isVacation, setIsVacation] = useState<boolean>(true)
-    const [isAllCoupons, setIsAllCoupons] = useState<boolean>(false)
-    const [isFood, setIsFood] = useState<boolean>(false)
-
-
     const navigate = useNavigate()
 
 
@@ -41,20 +36,6 @@ export const CustomerDetails = () => {
             })
     }, [])
 
-    function handleAllCoupons() {
-        setIsAllCoupons(!isAllCoupons)
-        console.log("is all:" + isAllCoupons)
-    }
-
-    function handleFood() {
-        setIsFood(!isFood)
-        console.log("is food: " + isFood)
-    }
-
-    function handleVacation() {
-        setIsVacation(!isVacation)
-        console.log("is vacation: " + isVacation)
-    }
 
     function handleBack() {
         navigate(routs.adminCustomers)
@@ -88,22 +69,6 @@ export const CustomerDetails = () => {
                 </Box>
                 <Box textAlign="center">
                     <Typography variant={"h2"}>Customer Coupons</Typography>
-                </Box>
-                <Box display={"flex"} flexWrap={"nowrap"}>
-                    <Typography variant={"h5"} m={2}>Filter</Typography>
-                    <FormControlLabel control={<Checkbox defaultChecked onChange={() => handleAllCoupons()}/>}
-                                      label="All Coupons" sx={{'& .MuiSvgIcon-root': {fontSize: 20}}}/>
-                    <FormControlLabel control={<Checkbox onChange={() => handleFood()}/>} label="Food"
-                                      sx={{'& .MuiSvgIcon-root': {fontSize: 20}}}/>
-                    <FormControlLabel control={<Checkbox onChange={() => handleVacation()}/>} label="Vacation"
-                                      sx={{'& .MuiSvgIcon-root': {fontSize: 20}}}/>
-                    <FormControlLabel control={<Checkbox/>} label="Shopping"
-                                      sx={{'& .MuiSvgIcon-root': {fontSize: 20}}}/>
-                    <FormControlLabel control={<Checkbox/>} label="Flights"
-                                      sx={{'& .MuiSvgIcon-root': {fontSize: 20}}}/>
-                    <FormControlLabel control={<Checkbox/>} label="Pets" sx={{'& .MuiSvgIcon-root': {fontSize: 20}}}/>
-                    <FormControlLabel control={<Checkbox/>} label="Electricity"
-                                      sx={{'& .MuiSvgIcon-root': {fontSize: 20}}}/>
                 </Box>
                 <Box display="flex" flexWrap="wrap">
                     {customer?.coupons.map(c => <CompanyManageCouponCard key={c.id} coupon={c}/>)}

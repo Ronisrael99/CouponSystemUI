@@ -96,7 +96,6 @@ export const UpdateCustomer = () => {
                     <Typography id="modal-modal-title" variant="h6" component="h2" textAlign={"center"}>
                         Update Customer
                     </Typography>
-                    <Typography id="modal-modal-description" sx={{mt: 2}}>
 
                         {customer &&
                             <>
@@ -170,7 +169,6 @@ export const UpdateCustomer = () => {
                             </>
                         }
 
-                    </Typography>
                 </Box>
             </>
         </Modal>

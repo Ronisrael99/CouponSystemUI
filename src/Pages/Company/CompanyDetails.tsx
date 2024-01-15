@@ -15,22 +15,43 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import adminService from "../../Services/AdminService";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import {current} from "@reduxjs/toolkit";
+import Coupon from "../../Models/Coupon";
+import {Error} from "../../Services/Error";
+import FilterNav from "../../Components/FilterNav";
 
 
 const CompanyDetails = () => {
 
+    const [error, setError] = useState<string>()
+    const [dialog, setDialog] = useState(false)
+
     const [company, setCompany] = useState<Company>()
 
-    const [isVacation, setIsVacation] = useState<boolean>(true)
-    const [isAllCoupons, setIsAllCoupons] = useState<boolean>(false)
-    const [isFood, setIsFood] = useState<boolean>(false)
+    const [filters, setFilters] = useState({
+        All: true,
+        Food: false,
+        Vacation: false,
+        Flights: false,
+        Pets: false,
+        Shopping: false,
+        Electricity: false,
+    });
 
+    const [foodCoupons, setFoodCoupons] = useState<Coupon[]>()
+    const [vacationCoupons, setVacationCoupons] = useState<Coupon[]>()
+    const [flightsCoupons, setFlightsCoupons] = useState<Coupon[]>()
+    const [petsCoupons, setPetsCoupons] = useState<Coupon[]>()
+    const [shoppingCoupons, setShoppingCoupons] = useState<Coupon[]>()
+    const [electricityCoupons, setElectricityCoupons] = useState<Coupon[]>()
 
     const navigate = useNavigate()
-
-
     const token = loginStore.getState().token
     const id = parseInt(useParams().id!)
+
+    function handleBack() {
+        navigate(routs.adminCompanies)
+    }
 
     useEffect(() => {
         loginStore.getState().clientType === "COMPANY" ?
@@ -47,27 +68,110 @@ const CompanyDetails = () => {
                 .catch(err => errorHandler.showError(err))
     }, [])
 
-    function handleAllCoupons() {
-        setIsAllCoupons(!isAllCoupons)
-        console.log("is all:" + isAllCoupons)
-    }
+    useEffect(() => {
+        loginStore.getState().clientType === "COMPANY" ?
+            companyService.getAllCouponsByCategory(token, "FOOD")
+                .then(c => setFoodCoupons(c))
+                .catch(err => {
+                    setError(errorHandler.showError(err));
+                    setDialog(true)
+                })
+            :
+            adminService.getAllCouponsByCategory(token, id, "FOOD")
+                .then(c => setFoodCoupons(c))
+                .catch(err => {
+                    setError(errorHandler.showError(err));
+                    setDialog(true)
+                })
+    }, [filters.Food])
 
-    function handleFood() {
-        setIsFood(!isFood)
-        console.log("is food: " + isFood)
-    }
+    useEffect(() => {
+        loginStore.getState().clientType === "COMPANY" ?
+            companyService.getAllCouponsByCategory(token, "VACATION")
+                .then(c => setVacationCoupons(c))
+                .catch(err => {
+                    setError(errorHandler.showError(err));
+                    setDialog(true)
+                })
+            :
+            adminService.getAllCouponsByCategory(token, id, "VACATION")
+                .then(c => setVacationCoupons(c))
+                .catch(err => {
+                    setError(errorHandler.showError(err));
+                    setDialog(true)
+                })
+    }, [filters.Vacation])
 
-    function handleVacation() {
-        setIsVacation(!isVacation)
-        console.log("is vacation: " + isVacation)
-    }
+    useEffect(() => {
+        loginStore.getState().clientType === "COMPANY" ?
+            companyService.getAllCouponsByCategory(token, "FLIGHTS")
+                .then(c => setFlightsCoupons(c))
+                .catch(err => {
+                    setError(errorHandler.showError(err));
+                    setDialog(true)
+                })
+            :
+            adminService.getAllCouponsByCategory(token, id, "FLIGHTS")
+                .then(c => setFlightsCoupons(c))
+                .catch(err => {
+                    setError(errorHandler.showError(err));
+                    setDialog(true)
+                })
+    }, [filters.Flights])
 
-    function handleBack() {
-        navigate(routs.adminCompanies)
-    }
+    useEffect(() => {
+        loginStore.getState().clientType === "COMPANY" ?
+            companyService.getAllCouponsByCategory(token, "PETS")
+                .then(c => setPetsCoupons(c))
+                .catch(err => {
+                    setError(errorHandler.showError(err));
+                    setDialog(true)
+                })
+            :
+            adminService.getAllCouponsByCategory(token, id, "PETS")
+                .then(c => setPetsCoupons(c))
+                .catch(err => {
+                    setError(errorHandler.showError(err));
+                    setDialog(true)
+                })
+    }, [filters.Pets])
 
+    useEffect(() => {
+        loginStore.getState().clientType === "COMPANY" ?
+            companyService.getAllCouponsByCategory(token, "SHOPPING")
+                .then(c => setShoppingCoupons(c))
+                .catch(err => {
+                    setError(errorHandler.showError(err));
+                    setDialog(true)
+                })
+            :
+            adminService.getAllCouponsByCategory(token, id, "SHOPPING")
+                .then(c => setShoppingCoupons(c))
+                .catch(err => {
+                    setError(errorHandler.showError(err));
+                    setDialog(true)
+                })
+    }, [filters.Shopping])
+
+    useEffect(() => {
+        loginStore.getState().clientType === "COMPANY" ?
+            companyService.getAllCouponsByCategory(token, "ELECTRICITY")
+                .then(c => setElectricityCoupons(c))
+                .catch(err => {
+                    setError(errorHandler.showError(err));
+                    setDialog(true)
+                })
+            :
+            adminService.getAllCouponsByCategory(token, id,"ELECTRICITY")
+                .then(c => setElectricityCoupons(c))
+                .catch(err => {
+                    setError(errorHandler.showError(err));
+                    setDialog(true)
+                })
+    }, [filters.Electricity])
 
     return (<>
+            {dialog && <Error error={error} onClose={() => setDialog(false)}/>}
             {loginStore.getState().clientType === "ADMINISTRATOR" &&
                 <ArrowBackIcon onClick={handleBack} sx={{cursor: "pointer", marginTop: 2, marginLeft: 9}}/>
             }
@@ -94,24 +198,31 @@ const CompanyDetails = () => {
                 <Box textAlign="center">
                     <Typography variant={"h2"}>Company Coupons</Typography>
                 </Box>
-                <Box display={"flex"} flexWrap={"nowrap"}>
-                    <Typography variant={"h5"} m={2}>Filter</Typography>
-                    <FormControlLabel control={<Checkbox defaultChecked onChange={() => handleAllCoupons()}/>}
-                                      label="All Coupons" sx={{'& .MuiSvgIcon-root': {fontSize: 20}}}/>
-                    <FormControlLabel control={<Checkbox onChange={() => handleFood()}/>} label="Food"
-                                      sx={{'& .MuiSvgIcon-root': {fontSize: 20}}}/>
-                    <FormControlLabel control={<Checkbox onChange={() => handleVacation()}/>} label="Vacation"
-                                      sx={{'& .MuiSvgIcon-root': {fontSize: 20}}}/>
-                    <FormControlLabel control={<Checkbox/>} label="Shopping"
-                                      sx={{'& .MuiSvgIcon-root': {fontSize: 20}}}/>
-                    <FormControlLabel control={<Checkbox/>} label="Flights"
-                                      sx={{'& .MuiSvgIcon-root': {fontSize: 20}}}/>
-                    <FormControlLabel control={<Checkbox/>} label="Pets" sx={{'& .MuiSvgIcon-root': {fontSize: 20}}}/>
-                    <FormControlLabel control={<Checkbox/>} label="Electricity"
-                                      sx={{'& .MuiSvgIcon-root': {fontSize: 20}}}/>
-                </Box>
+
+                <FilterNav filters={filters} setFilters={setFilters}/>
+
                 <Box display="flex" flexWrap="wrap">
-                    {company?.coupons.map(c => <CompanyManageCouponCard key={c.id} coupon={c}/>)}
+                    {filters.All &&
+                        company?.coupons.map(c => <CompanyManageCouponCard key={c.id} coupon={c}/>)
+                    }
+                    {!filters.All && filters.Food &&
+                        foodCoupons?.map(c => <CompanyManageCouponCard coupon={c} key={c.id}/>)
+                    }
+                    {!filters.All && filters.Vacation &&
+                        vacationCoupons?.map(c => <CompanyManageCouponCard coupon={c} key={c.id}/>)
+                    }
+                    {!filters.All && filters.Flights &&
+                        flightsCoupons?.map(c => <CompanyManageCouponCard coupon={c} key={c.id}/>)
+                    }
+                    {!filters.All && filters.Pets &&
+                        petsCoupons?.map(c => <CompanyManageCouponCard coupon={c} key={c.id}/>)
+                    }
+                    {!filters.All && filters.Shopping &&
+                        shoppingCoupons?.map(c => <CompanyManageCouponCard coupon={c} key={c.id}/>)
+                    }
+                    {!filters.All && filters.Electricity &&
+                        electricityCoupons?.map(c => <CompanyManageCouponCard coupon={c} key={c.id}/>)
+                    }
                 </Box>
             </Box>
         </>
