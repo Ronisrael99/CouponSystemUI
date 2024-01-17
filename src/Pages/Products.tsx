@@ -53,68 +53,105 @@ export const Products = () => {
         })
     }, [])
 
-    useEffect(() => {
+
+    const getAllFoodCoupons = () => {
         couponService.PUBLICGetAllCouponsByCategory("FOOD")
             .then(c => setFoodCoupons(c))
             .catch(err => {
                 setError(err);
                 setDialog(true);
             })
+    }
+    useEffect(() => {
+        if (filters.Food) {
+            getAllFoodCoupons();
+        }
     }, [filters.Food])
 
-    useEffect(() => {
+
+    const getAllPetsCoupons = () => {
         couponService.PUBLICGetAllCouponsByCategory("PETS")
             .then(c => setPetsCoupons(c))
             .catch(err => {
                 setError(err);
                 setDialog(true);
             })
-    }, [filters.Pets])
+    }
+    useEffect(()=>{
+        if (filters.Pets){
+            getAllPetsCoupons()
+        }
+    },[filters.Pets])
 
-    useEffect(() => {
+
+    const getAllFlightsCoupons = () => {
         couponService.PUBLICGetAllCouponsByCategory("FLIGHTS")
             .then(c => setFlightsCoupons(c))
             .catch(err => {
                 setError(err);
                 setDialog(true);
             })
-    }, [filters.Flights])
+    }
+    useEffect(()=>{
+        if (filters.Flights){
+            getAllFlightsCoupons();
+        }
+    },[filters.Flights])
 
-    useEffect(() => {
+
+    const getAllElectricityCoupons = () => {
         couponService.PUBLICGetAllCouponsByCategory("ELECTRICITY")
             .then(c => setElectricityCoupons(c))
             .catch(err => {
                 setError(err);
                 setDialog(true);
             })
-    }, [filters.Electricity])
+    }
+    useEffect(()=>{
+        if (filters.Electricity){
+            getAllElectricityCoupons()
+        }
+    },[filters.Electricity])
 
-    useEffect(() => {
+
+    const getAllShoppingCoupons = () => {
         couponService.PUBLICGetAllCouponsByCategory("SHOPPING")
             .then(c => setShoppingCoupons(c))
             .catch(err => {
                 setError(err);
                 setDialog(true);
             })
-    }, [filters.Shopping])
+    }
+    useEffect(()=>{
+        if (filters.Shopping){
+            getAllShoppingCoupons()
+        }
+    },[filters.Shopping])
 
-    useEffect(() => {
+
+    const getAllVacationCoupons = () => {
         couponService.PUBLICGetAllCouponsByCategory("VACATION")
             .then(c => setVacationCoupons(c))
             .catch(err => {
                 setError(err);
                 setDialog(true);
             })
-    }, [filters.Vacation])
-
+    }
+    useEffect(()=>{
+        if (filters.Vacation){
+            getAllVacationCoupons()
+        }
+    },[filters.Vacation])
 
     return (
         <>
+            {dialog && <Error error={error} onClose={() => setDialog(false)}/>}
             <Typography variant={"h2"} textAlign={"center"} mt={2}>Our Products</Typography>
-            <Box display="flex" flexWrap="wrap" m={5}>
-                {dialog && <Error error={error} onClose={() => setDialog(false)}/>}
 
-                <FilterNav filters={filters} setFilters={setFilters}/>
+            <FilterNav filters={filters} setFilters={setFilters}/>
+
+            <Box display="flex" flexWrap="wrap" m={5}>
+
 
                 <Box display="flex" flexWrap="wrap">
                     {filters.All &&
@@ -124,8 +161,8 @@ export const Products = () => {
                     }
                     {!filters.All && filters.Food &&
                         foodCoupons?.map(p => <NavLink key={p.id} to={routs.productDetails + p.id}
-                        style={{textDecoration: "none"}}><ProductCard key={p.id}
-                        coupon={p}/></NavLink>)
+                                                       style={{textDecoration: "none"}}><ProductCard key={p.id}
+                                                                                                     coupon={p}/></NavLink>)
                     }
                     {!filters.All && filters.Pets &&
                         petsCoupons?.map(p => <NavLink key={p.id} to={routs.productDetails + p.id}
@@ -134,23 +171,23 @@ export const Products = () => {
                     }
                     {!filters.All && filters.Vacation &&
                         vacationCoupons?.map(p => <NavLink key={p.id} to={routs.productDetails + p.id}
-                                                       style={{textDecoration: "none"}}><ProductCard key={p.id}
-                                                                                                     coupon={p}/></NavLink>)
+                                                           style={{textDecoration: "none"}}><ProductCard key={p.id}
+                                                                                                         coupon={p}/></NavLink>)
                     }
                     {!filters.All && filters.Flights &&
                         flightsCoupons?.map(p => <NavLink key={p.id} to={routs.productDetails + p.id}
-                                                       style={{textDecoration: "none"}}><ProductCard key={p.id}
-                                                                                                     coupon={p}/></NavLink>)
+                                                          style={{textDecoration: "none"}}><ProductCard key={p.id}
+                                                                                                        coupon={p}/></NavLink>)
                     }
                     {!filters.All && filters.Shopping &&
                         shoppingCoupons?.map(p => <NavLink key={p.id} to={routs.productDetails + p.id}
-                                                       style={{textDecoration: "none"}}><ProductCard key={p.id}
-                                                                                                     coupon={p}/></NavLink>)
+                                                           style={{textDecoration: "none"}}><ProductCard key={p.id}
+                                                                                                         coupon={p}/></NavLink>)
                     }
                     {!filters.All && filters.Electricity &&
                         electricityCoupons?.map(p => <NavLink key={p.id} to={routs.productDetails + p.id}
-                                                       style={{textDecoration: "none"}}><ProductCard key={p.id}
-                                                                                                     coupon={p}/></NavLink>)
+                                                              style={{textDecoration: "none"}}><ProductCard key={p.id}
+                                                                                                            coupon={p}/></NavLink>)
                     }
                 </Box>
 
