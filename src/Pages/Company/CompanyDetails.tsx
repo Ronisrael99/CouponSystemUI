@@ -68,7 +68,9 @@ const CompanyDetails = () => {
                 .catch(err => errorHandler.showError(err))
     }, [])
 
-    useEffect(() => {
+
+
+    const getAllFoodCoupons = () => {
         loginStore.getState().clientType === "COMPANY" ?
             companyService.getAllCouponsByCategory(token, "FOOD")
                 .then(c => setFoodCoupons(c))
@@ -83,9 +85,15 @@ const CompanyDetails = () => {
                     setError(errorHandler.showError(err));
                     setDialog(true)
                 })
-    }, [filters.Food])
+    }
+    useEffect(()=>{
+        if (filters.Food){
+            getAllFoodCoupons()
+        }
+    },[filters.Food])
 
-    useEffect(() => {
+
+    const getAlVacationCoupons = () => {
         loginStore.getState().clientType === "COMPANY" ?
             companyService.getAllCouponsByCategory(token, "VACATION")
                 .then(c => setVacationCoupons(c))
@@ -100,9 +108,16 @@ const CompanyDetails = () => {
                     setError(errorHandler.showError(err));
                     setDialog(true)
                 })
-    }, [filters.Vacation])
+    }
+    useEffect(()=>{
+        if (filters.Vacation){
+            getAlVacationCoupons()
+        }
+    },[filters.Vacation])
 
-    useEffect(() => {
+
+
+    const getAllFlightsCoupon = () => {
         loginStore.getState().clientType === "COMPANY" ?
             companyService.getAllCouponsByCategory(token, "FLIGHTS")
                 .then(c => setFlightsCoupons(c))
@@ -117,9 +132,16 @@ const CompanyDetails = () => {
                     setError(errorHandler.showError(err));
                     setDialog(true)
                 })
-    }, [filters.Flights])
+    }
+    useEffect(()=>{
+        if (filters.Flights){
+            getAllFlightsCoupon()
+        }
+    },[filters.Flights])
 
-    useEffect(() => {
+
+
+    const getAllPetsCoupons = () => {
         loginStore.getState().clientType === "COMPANY" ?
             companyService.getAllCouponsByCategory(token, "PETS")
                 .then(c => setPetsCoupons(c))
@@ -134,9 +156,16 @@ const CompanyDetails = () => {
                     setError(errorHandler.showError(err));
                     setDialog(true)
                 })
+    }
+    useEffect(() => {
+        if (filters.Pets){
+            getAllPetsCoupons()
+        }
     }, [filters.Pets])
 
-    useEffect(() => {
+
+
+    const getAllShoppingCoupon = () => {
         loginStore.getState().clientType === "COMPANY" ?
             companyService.getAllCouponsByCategory(token, "SHOPPING")
                 .then(c => setShoppingCoupons(c))
@@ -151,9 +180,16 @@ const CompanyDetails = () => {
                     setError(errorHandler.showError(err));
                     setDialog(true)
                 })
+    }
+    useEffect(() => {
+        if (filters.Shopping){
+            getAllShoppingCoupon()
+        }
     }, [filters.Shopping])
 
-    useEffect(() => {
+
+
+    const getAllElectricityCoupons = () => {
         loginStore.getState().clientType === "COMPANY" ?
             companyService.getAllCouponsByCategory(token, "ELECTRICITY")
                 .then(c => setElectricityCoupons(c))
@@ -168,7 +204,13 @@ const CompanyDetails = () => {
                     setError(errorHandler.showError(err));
                     setDialog(true)
                 })
+    }
+    useEffect(() => {
+        if (filters.Electricity){
+            getAllElectricityCoupons()
+        }
     }, [filters.Electricity])
+
 
     return (<>
             {dialog && <Error error={error} onClose={() => setDialog(false)}/>}
